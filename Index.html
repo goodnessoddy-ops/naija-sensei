@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tutorly</title>
+  <title>NaijaSensei</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -115,7 +115,7 @@
 </head>
 <body>
   <header>
-    <h1>Tutorly</h1>
+    <h1>NaijaSensei</h1>
     <div class="tagline">Offline tutor for Nigerian students · Powered by Gemma 4</div>
   </header>
 
@@ -151,6 +151,7 @@
     const langSelect = document.getElementById("lang");
     const autoSpeak = document.getElementById("autospeak");
 
+    const API = window.location.origin;
     const history = [];
 
     // ============ TEXT-TO-SPEECH ============
@@ -253,7 +254,7 @@
       botDiv.textContent = "Thinking...";
 
       try {
-        const response = await fetch("http://localhost:8000/chat", {
+        const response = await fetch(`${API}/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: text, history }),

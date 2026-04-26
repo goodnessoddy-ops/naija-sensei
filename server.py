@@ -1,5 +1,5 @@
 """
-Tutorly server with RAG and adaptive cloud/local inference.
+NaijaSensei server with RAG and adaptive cloud/local inference.
 
 Default behaviour (auto):
   - Try cloud Gemma 4 26B via Google AI Studio first (fast)
@@ -91,15 +91,15 @@ def resolve_mode() -> str:
 
 
 # Banner at startup
-print(f"\n[Tutorly] MODE={MODE.upper()}")
+print(f"\n[NaijaSensei] MODE={MODE.upper()}")
 if MODE == "auto":
-    print(f"[Tutorly]   - online:  cloud {CLOUD_MODEL}")
-    print(f"[Tutorly]   - offline: local {LOCAL_MODEL} via Ollama")
-    print(f"[Tutorly]   - will pick automatically based on connectivity")
+    print(f"[NaijaSensei]   - online:  cloud {CLOUD_MODEL}")
+    print(f"[NaijaSensei]   - offline: local {LOCAL_MODEL} via Ollama")
+    print(f"[NaijaSensei]   - will pick automatically based on connectivity")
 elif MODE == "online":
-    print(f"[Tutorly]   using cloud {CLOUD_MODEL} (will fail loud without internet)")
+    print(f"[NaijaSensei]   using cloud {CLOUD_MODEL} (will fail loud without internet)")
 else:
-    print(f"[Tutorly]   using local {LOCAL_MODEL} via Ollama (no internet required)")
+    print(f"[NaijaSensei]   using local {LOCAL_MODEL} via Ollama (no internet required)")
 print()
 
 
@@ -202,7 +202,8 @@ def stream_with_fallback(system_prompt: str, history: list[dict], user_message: 
             err_str = str(e).lower()
             looks_like_network = any(s in err_str for s in (
                 "getaddrinfo", "connection", "timeout", "name resolution",
-                "network", "unreachable", "503", "504",
+                "network", "unreachable", "disconnected", "stream",
+                "503", "504", "429", "rate limit", "quota",
             ))
             if MODE == "auto" and looks_like_network and _local_client is not None:
                 # Mark connectivity stale so the next request also goes local
