@@ -5,7 +5,7 @@ Built for the Gemma 4 Good Hackathon — Future of Education track.
 
 ## What it does
 
-Tutorly is a conversational AI tutor that:
+NaijaSensei is a conversational AI tutor that:
 - Answers questions in English, Nigerian Pidgin, Yoruba, Igbo, and Hausa
 - Grounds answers in 1,797 curriculum chunks across 13 WAEC subjects
 - Works fully offline using local Gemma 3n E2B (true airplane-mode operation)
