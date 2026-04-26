@@ -1,0 +1,211 @@
+NUMBER AND NUMERATION
+Number bases
+conversion of numbers from one base to another
+Basic operations on number bases
+Modular Arithmetic
+Concept of Modulo Arithmetic
+Addition, subtraction, and multiplication operations in modulo arithmetic
+Application to daily life
+Fractions, Decimals and Approximations
+Basic operations on fractions and decimals.
+Approximations and significant figures.
+Indices
+Laws of indices
+Numbers in standard form ( scientific notation)
+Logarithms
+Relationship between indices and logarithms: e.g., y = 10k implies log10y = k.
+Basic rules of logarithms
+Use of tables of logarithms and anti-logarithms
+Calculations involving multiplication, division, powers, and roots.
+Sequence and Series
+Patterns of sequences.
+Arithmetic progression (A.P.) and Geometric Progression (G.P.)
+Sets
+Idea of sets, universal sets, finite and infinite sets, subsets, empty sets, and disjoint sets.
+Solution of practical problems involving classification using Venn diagrams.
+Logical Reasoning
+Simple statements.
+True and false statements.
+Negation of statements and implications.
+Use of symbols: use of Venn diagrams
+Positive and negative integers, rational numbers
+The four basic operations on rational numbers.
+Match rational numbers with points on the number line.
+Notation: natural numbers (N), integers ( Z ), and rational numbers ( Q ).
+Surds (Radicals)
+Simplification and rationalization of simple surds.
+Surds of the form, a and b, where a is a rational number and b is a positive integer.
+Basic operations on surds (exclude surd of the form ).
+Matrices and Determinants
+Identification of order, notation, and types of matrices.
+Addition, subtraction, scalar multiplication, and multiplication of matrices.
+Determinant of a matrix
+Ratio, Proportions and  Rates
+The ratio between two similar quantities.
+The proportion between two or more similar quantities.
+Financial partnerships, rates of work, costs, taxes, foreign exchange, density (e.g., population), mass, distance, time, and speed.
+Percentages
+Simple interest, commission, discount, depreciation, profit and loss, compound interest, hire purchase, and percentage error.
+Financial Arithmetic
+Depreciation/Amortization.
+Annuities
+Capital Market Instruments
+Variation
+Direct, inverse, partial, and joint variations.
+Application to simple, practical problems.
+ALGEBRAIC PROCESSES
+Algebraic expressions
+Formulating algebraic expressions from given situations
+Evaluation of algebraic expressions
+Simple operations on algebraic expressions
+Expansion
+Factorization
+Solution of Linear Equations
+Linear equations in one variable
+Simultaneous linear equations in two variables.
+Change of Subject of a Formula/Relation
+Change of subject of a formula or relationship
+Substitution.
+Quadratic Equations
+Solution of quadratic equations
+Forming a quadratic equation with the given roots.
+Application of a solution to a quadratic equation in practical problems.
+Graphs of Linear and Quadratic functions
+Interpretation of graphs, the coordinate of points, tables of values, drawing quadratic graphs, and obtaining roots from graphs.
+Graphical solution of a pair  of equations of the form: y = ax2 + bx + c and y = mx + k
+drawing tangents to curves to determine the gradient at a given point.
+Linear Inequalities
+Solution of linear inequalities in one variable and representation on the number line.
+Graphical solution of linear inequalities in two variables.
+Graphical solution of simultaneous linear inequalities in two variables.
+Algebraic Fractions
+Operations on algebraic fractions with:
+
+Monomial denominators
+Binomial denominators
+Functions and Relations
+Types of Functions
+One-to-one, one-to-many, many-to-one, many-to-many.
+Functions as a mapping, determination of the rule of a given mapping or function.
+MENSURATION
+Lengths and Perimeters
+Use of Pythagoras theorem, sine, and cosine rules to determine lengths and distances.
+lengths of arcs of circles, perimeters of sectors, and segments.
+Longitudes and latitudes.
+Areas
+Triangles and special  quadrilaterals: rectangles, parallelograms and trapeziums
+Circles, sectors, and segments of circles.
+Surface areas of cubes, cuboids, cylinders, pyramids, right triangular prisms, cones, and spheres.
+Areas of similar figures. Include the area of the triangle = ½ base x height and ½absinC.
+Areas of compound shapes.
+Relationship between the sector of a circle and the surface area of a cone.
+Volumes
+Volumes of cubes, cuboids, cylinders, cones, right pyramids and spheres.
+Volumes of similar solids
+PLANE GEOMETRY
+Angles
+Angles at a point add up to  360 degrees.
+Adjacent angles on a straight line are supplementary.
+Vertically opposite angles are equal.
+Angles and intercepts on parallel lines
+Alternate angles are equal.
+Corresponding angles are equal.
+Interior opposite angles are supplementary
+Intercept theorem.
+Triangles and polygons
+The sum of the angles of a  triangle is 2 right angles.
+The exterior angle of a triangle equals the sum of the two interior opposite angles.
+congruent triangles.
+Properties of special triangles: isosceles, equilateral, right-angled, etc
+Properties of special quadrilaterals: parallelogram, rhombus,  square, rectangle, trapezium.
+Properties of similar triangles.
+The sum of the angles of a  polygon
+Property of exterior angles of a polygon.
+Parallelograms on the same base and between the same parallels are equal in area.
+Circles
+Chords.
+The angle at which an arc of a  circle subtends at the centre of the circle is twice that which it subtends at any point on the remaining part of the circumference.
+Any angle subtended at the circumference by a diameter is a right angle.
+Angles in the same segment are equal.
+Angles in opposite segments are supplementary.
+Perpendicularity of tangent and radius.
+If a tangent is drawn to a circle and from the point of contact a chord is drawn, each angle that this chord makes with the tangent is equal to the angle in the alternate segment.
+Construction
+Bisectors of angles and line segments
+Line parallel or perpendicular to a given line.
+Angles, e.g., 900, 600, 450, 300, and an angle equal to a given angle.
+Triangles and quadrilaterals from sufficient data.
+Loci
+Knowledge of the loci listed below and their intersections in 2 dimensions.
+
+Points at a given distance from a given point.
+Points equidistant from two given points.
+Points equidistant from two given straight lines.
+Points at a given distance from a given straight line.
+COORDINATE GEOMETRY OF  STRAIGHT LINES
+Concept of the x-y plane
+Coordinates of points on the x-y plane
+TRIGONOMETRY
+Sine, Cosine and Tangent of an angle.
+Sine, Cosine and Tangent of acute angles.
+Use of tables of trigonometric ratios.
+Trigonometric ratios of 300, 450, and 600
+Sine, cosine, and tangent of angles from 00 to 3600
+Graphs of sine and cosine.
+Graphs of trigonometric ratios.
+Angles of elevation and depression
+Calculating angles of elevation and depression.
+Application to heights and distances.
+Bearings
+Bearing of one point from another.
+Calculation of distances and angles
+INTRODUCTORY CALCULUS
+Differentiation of algebraic functions.
+Integration of simple Algebraic functions.
+Concept/meaning of differentiation/derived function: the relationship between the gradient of a curve at a point and the differential coefficient of the equation of the curve at that point.
+Standard derivatives of some basic function, e.g., if y = x2, = 2x. If s = 2t3 + 4, = v = 6t2, where s = distance, t = time, and v = velocity.
+Application to real-life situations such as maximum and minimum values, rates of change, etc.
+Meaning or concept of integration, evaluation of simple definite algebraic equations.
+STATISTICS AND PROBABILITY
+Statistics
+Frequency distribution
+Pie charts, bar charts, histograms and frequency polygons
+Mean, median, and mode for both discrete and grouped data.
+Cumulative frequency curve (Ogive).
+Measures of Dispersion: range, semi inter-quartile/inter-quartile range, variance, mean deviation and standard deviation
+Probability
+Experimental and theoretical probability.
+Addition of probabilities for mutually exclusive and independent events.
+Multiplication of probabilities for independent events.
+VECTORS AND TRANSFORMATION
+Vectors in a Plane
+Vectors as a directed line segment.
+Cartesian components of a vector
+The magnitude of a vector, equal vectors, addition and subtraction of vectors, zero vector, parallel vectors, and multiplication of a vector by a scalar.
+Transformation in the Cartesian Plane
+Reflection of points and shapes in the Cartesian Plane.
+Rotation of points and shapes in the Cartesian Plane.
+Translation of points and shapes in the Cartesian Plane.
+Enlargement
+UNITS
+Length
+1000 millimetres (mm) = 100 centimetres (cm) = 1 metre(m).
+1000 metres = 1 kilometre (km)
+Area
+10,000 square metres (m2) = 1 hectare (ha)
+Capacity
+1000 cubic centimeters (cm3) = 1 litre (l)
+Mass
+milligrammes (mg) = 1 gramme (g)
+1000 grammes (g) = 1 kilogramme( kg )
+1000 kilogrammes (kg) = 1 tonne.
+Currencies
+The Gambia – 100 bututs (b) = 1 Dalasi (D)
+Ghana – 100 Ghana pesewas (Gp) = 1 Ghana Cedi ( GH¢)
+Liberia – 100 cents (c) = 1 Liberian Dollar (LD)
+Nigeria – 100 kobo (k) = 1 Naira (N)
+Sierra Leone – 100 cents (c) = 1 Leone (Le)
+UK – 100 pence (p) = 1 pound (£)
+USA – 100 cents (c) = 1 dollar ($)
+French Speaking territories: 100 centimes (c) = 1 Franc (fr)
+facebook sharing button Sharetwitter sharing button Postwhatsapp sharing button Share

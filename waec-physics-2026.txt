@@ -1,0 +1,306 @@
+INTERACTION OF MATTER, SPACE & TIME
+Concepts of matter
+Fundamental and derived quantities and units
+Fundamental quantities and units
+Derived quantities and units
+Position, distance and displacement
+Concept of position as a location of point-rectangular coordinates.
+Measurement of distance
+Concept of direction as a way of locating a point –bearing
+Distinction between distance and displacement.
+Mass and weight
+Distinction between mass and weight
+Time
+Concept of time as interval between physical events
+Measurement of time
+Fluid at rest
+Volume, density and relative density
+Pressure in fluids
+Equilibrium of bodies
+Archimedes’ principle
+Law of flotation
+Motion
+Types of motion
+Random
+rectilinear
+translational
+Rotational
+circular
+orbital
+spin,
+Oscillatory
+Relative motion
+Cause of motion
+Types of force
+Contact force
+Non-contact force(field force)
+Solid friction
+Viscosity (friction in fluids)
+Simple ideas of circular motion
+Speed and velocity
+Concept of speed as change of distance with time
+Concept of velocity as change of displacement with time
+Uniform/non-uniform speed/velocity
+Distance/displacement-time graph
+Rectilinear acceleration
+Concept of Acceleration/deceleration as increase/decrease in velocity with time.
+Uniform/non-uniform acceleration
+Velocity-time graph
+Equations of motion with constant acceleration
+Motion under gravity as a special case.
+Scalars and vectors
+Concept of scalars as physical quantities with magnitude and no direction
+Concept of vectors as physical quantities with both magnitude and direction.
+Vector representation
+Addition of vectors
+Resolution of vectors
+Resultant velocity using vector representation.
+Equilibrium of forces
+Principle of moments
+Conditions for equilibrium of rigid bodies under the action of parallel and non-parallel forces.
+Centre of gravity and stability
+Simple harmonic motion
+Illustration, explanation and definition of simple harmonic motion (S.H.M)
+Speed and acceleration of S.H.M.
+Period, frequency and amplitude of a body executing S.H.M.
+Energy of S.H.M
+Forced vibration and resonance
+Newton’s laws of motion
+First Law: Inertia of rest and inertia of motion
+Second Law: Force, acceleration, momentum and impulse
+Third Law: Action and reaction
+ENERGY: Mechanical and Heat
+Energy
+Forms of energy
+World energy resources
+Conservation of energy
+Work, Energy and Power
+Concept of work as a measure of energy transfer
+Concept of energy as capability to do work
+Work done in a gravitational field.
+Types of mechanical energy
+Potential energy (P.E.)
+Kinetic energy (K.E)
+Conservation of mechanical energy.
+Concept of power as time rate of doing work.
+Application of mechanical energy machines.
+Levers
+pulleys
+inclined plane
+wedge
+screw
+wheel and axle
+gears
+Heat Energy
+Temperature and its measurement
+Effects of heat on matter e.g
+Rise in temperature
+Change of phase state
+Expansion
+Change of resistance
+Thermal expansion – Linear, area and volume expansivities
+Heat transfer
+Condition
+convention
+radiation
+The gas laws:
+Boyle’s law
+Charles’ law
+pressure law
+general gas law
+Measurement of heat energy
+Concept of heat capacity
+Specific heat capacity
+Latent heat
+Concept of latent heat
+Melting point and boiling Point
+Specific latent heat of fusion and of vaporization
+Evaporation and boiling
+Vapour and vapour pressure
+Humidity, relative humidity and dew point
+Humidity and the weather
+WAVES
+Production and propagation of waves
+Production and propagation of mechanical waves
+Pulsating system: Energy transmitted with definite speed, frequency and wavelength
+Waveform
+Mathematical relationship connecting frequency (f), wavelength(λ), period (T) and velocity (v)
+Types of waves
+Transverse and longitudinal
+Mathematical representation of wave motion
+Properties of waves
+Reflection
+refraction
+diffraction
+Interference
+superposition of progressive waves producing standing stationary waves
+Light waves
+Sources of light
+Rectilinear propagation of light
+Reflection of light at plane surface
+plane mirror
+Reflection of light at curved surfaces
+concave mirror
+convex mirror
+Refraction of light at plane surfaces
+rectangular glass prism (block)
+triangular prism
+Refraction of light at curved surfaces
+Converging and diverging lenses
+Application of lenses in optical instruments.
+Dispersion of white light by a triangular glass prism.
+Electromagnetic waves
+Types of radiation in electromagnetic Spectrum
+Sound Waves
+Sources of sound
+Transmission of sound waves
+Speed of sound in solid, liquid and air
+Echoes and reverberation
+Noise and music
+Characteristics of sound
+Vibration in strings
+Forced vibration
+Resonance
+Harmonies and overtones
+Vibration of air in pipe
+open and closed pipes
+Description property of fields
+Concept of fields
+Gravitational
+Electric
+Magnetic
+Properties of a force field
+Gravitational field
+Acceleration due to gravity, (g)
+Gravitational force between two
+masses:
+Newton’s law of gravitation
+Gravitational potential and escape
+velocity.
+Electric Field
+Electrostatics
+Production of electric charges
+Types of distribution of charges
+Storage of charges
+Electric lines of force
+Electric force between point charges: Coulomb’s law
+Concepts of electric field, electric field intensity (potential gradient) and electric potential.
+CapacitanceDefinition, arrangement and application
+Current electricity
+Production of electric current from primary and secondary cells
+Potential difference and electric current
+Electric circuit
+Electric conduction through materials
+Electric energy and power
+Shunt and multiplier
+Resistivity and Conductivity
+Measurement of electric current, potential difference,
+resistance, e.m.f. and internal resistance of a cell.
+Magnetic field
+Properties of magnets and magnetic materials.
+Magnetization and demagnetization.
+Concept of magnetic field
+Magnetic force on:
+a current-carrying conductor placed in a magnetic field
+between two parallel current-carrying conductors
+Use of electromagnets
+The earth’s magnetic field
+Magnetic force on a moving charged particle
+Electromagnetic field
+Concept of electromagnetic field
+Electromagnetic induction
+Faraday’s law
+Lenz’s law
+motor-generator effect
+Inductance
+Eddy currents
+Power transmission and distribution
+Simple A.C. circuits
+Graphical representation of e.m.f and current in an a.c. circult.
+Peak and r..m.s. values
+Series circuit containing resistor, inductor and capacitor
+Reactance and impedance
+Vector diagrams
+Resonance in an a.c, circuit
+Power in an a.c. circuit.
+Structure of the atom
+Models of the atom
+Energy quantization
+Photoelectric effect
+Thermionic emission
+X-rays
+Structure of the nucleus
+Composition of the nucleus
+Radioactivity
+Natural
+artificial
+Nuclear reactions
+Fusion
+Fission
+Wave-particle paradox
+Electron diffraction
+Duality of matter
+HARMONISED TOPICS FOR SHORT STRUCTURED QUESTIONS FOR ALL MEMBER COUNTRIES
+Derived quantities and dimensional Analysis
+Fundamental quantities and units e.g. Length, mass,
+time, electric current, luminous intensity and their respective units
+Derived quantities and units. e.g. volume, density, speed e.t.c. and their respective units
+Explanation of dimensions in terms of fundamental
+and derived quantities. Uses of dimensions:
+to verity dimensional correctness of a given equation
+to derive the relationship between quantities
+to obtain derived units.
+Projectile motion concept of projectiles as an object thrown/release into space
+Applications of projectiles in warfare, sports etc.
+Simple problems involving range, maximum height and time of flight may be set.
+Satellites and rockets
+Meaning of a satellite
+comparison of natural and artificial satellites parking orbits
+Geostationary satellites
+period of revolution
+speed of a satellite.
+Uses of satellites and rockets
+Elastic Properties of solid:
+Behaviour of elastic materials under stress – features
+of load – extension graph
+work done in springs and string
+Simple calculations on Hook’s law and Young’s modulus.
+Thermal conductivity
+Solar energy collector
+solar panel for heat energy supply
+Black body Radiation.
+Explanation of a blackbody
+Variation of intensity of black body radiation with wavelength at different temperatures.
+Fibre Optics
+Explanation of concept of fibre optics
+Principle of transmission of light through an optical
+fibre
+Applications of fibre optics e.g. local area Networks
+(LAN) medicine, rensing devices, carrying laser
+beams e.t.c
+Introduction to LASER
+Meaning of LASER
+Types of LASERS (Solid state, gas, liquid and semi-conductor LASERS)
+Application of LASERS
+Scientific research
+communication
+medicine
+military technology
+Holograms e.t.c.
+Dangers involved in using LASERS.
+Magnetic materials
+Uses of magnets and ferromagnetic materials.
+Electrical Conduction through materials [Electronic]
+Distinction between conductors, semiconductors and
+insulators in term of band theory.
+Semi conductor materials (silicon and germanium)
+Meaning of intrinsic semiconductors.
+Charge carriers Doping production of p-type and n-type extrinsic semi conductors.
+Junction diode – forward and reverse biasing, voltage characteristics.
+Uses of diodes Half and full wave rectification.
+Structure of matter
+Use of kinetic theory to explain diffusion.
+Wave – particle paradox
+Electron diffraction
+Duality of matter
+Simple illustrations of dual nature of light.
