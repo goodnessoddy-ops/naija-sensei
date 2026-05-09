@@ -27,7 +27,13 @@ Arts: Government, Christian Religious Studies, Islamic Religious Studies
 Commercial: Economics, Commerce, Financial Accounting
 
 All curriculum sourced from official WAEC syllabi.
+## Running NaijaSensei locally
 
+1. Clone the repo: `git clone https://github.com/goodnessoddy-ops/naija-sensei`
+2. Install dependencies: `pip install -r requirements.txt`
+3. Add your Google API key to `.env`
+4. Start the server: `python -m uvicorn server:app --port 8000`
+5. Open http://localhost:8000 in your browser
 ## Status
 
 Work in progress. Submission for the Gemma 4 Good Hackathon, May 2026.
