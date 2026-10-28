@@ -1,0 +1,119 @@
+# docker-compose.local.yml — a complete, fully offline-capable NaijaSensei
+# deployment on ONE machine: the app, Postgres, and Ollama (serving the
+# local gemma3n:e2b model) all running together on a school's own server,
+# reachable by students over the school's LAN/WiFi with zero dependency on
+# the wider internet once it's set up.
+#
+# This is a genuinely different deployment topology from DEPLOY.md's cloud
+# path (managed Postgres, multiple app replicas, Redis, Paystack) — see
+# LOCAL_DEPLOYMENT.md for the full explanation of when to use which, and
+# why the same codebase supports both without code changes, just different
+# environment configuration.
+#
+# QUICK START
+#   1. Run ./setup_local.sh once — generates real secrets into .env.local
+#      (never reuse the placeholder values that were shared anywhere in
+#      chat/documentation — see security.py's module docstring for why).
+#   2. docker compose -f docker-compose.local.yml up -d
+#   3. First startup will take a while — Ollama needs to download the
+#      gemma3n:e2b model (a few GB) ONCE. After that, everything is local.
+#   4. Visit http://<this-machine's-LAN-IP>:8000 from any device on the
+#      same network.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: naijasensei
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.local — run ./setup_local.sh}
+      POSTGRES_DB: naijasensei
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U naijasensei -d naijasensei"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # Not exposed to the host/LAN — only the app container needs to reach
+    # this. Nothing outside this compose network can connect to it.
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    # GPU passthrough (optional, big speed difference if the school server
+    # has one): uncomment if the host has an NVIDIA GPU + nvidia-container-toolkit.
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # One-shot job: pulls gemma3n:e2b into the ollama service's volume, then
+  # exits. The app waits for this to finish successfully before it starts,
+  # so it never tries to chat with a model that isn't there yet.
+  ollama-pull:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["ollama", "pull", "gemma3n:e2b"]
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama-pull:
+        condition: service_completed_successfully
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://naijasensei:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.local}@postgres:5432/naijasensei
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?Set JWT_SECRET_KEY in .env.local — run ./setup_local.sh}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env.local — run ./setup_local.sh}
+      CREDENTIALS_ENCRYPTION_KEY: ${CREDENTIALS_ENCRYPTION_KEY:?Set CREDENTIALS_ENCRYPTION_KEY in .env.local — run ./setup_local.sh}
+      # MODE=offline forces the local Ollama path unconditionally, even if
+      # this machine happens to have some intermittent/expensive
+      # connectivity (e.g. a metered satellite link) — nothing gets sent
+      # to a cloud AI provider from a box configured this way. Set to
+      # `auto` instead if you WANT it to opportunistically use cloud
+      # providers when internet is available and fall back to local
+      # automatically otherwise — see ai_providers.py's resolve_mode().
+      MODE: offline
+      OLLAMA_HOST: http://ollama:11434
+      # Billing is genuinely optional for a local/offline deployment —
+      # PAYSTACK_SECRET_KEY left unset means /billing/checkout returns a
+      # clean 503 rather than crashing anything, while redemption codes
+      # (pre-generated centrally and distributed to the school, e.g. on a
+      # printed sheet) still work fully offline, since redemption is just
+      # a local DB check with no external call. See billing.py.
+      PAYSTACK_SECRET_KEY: ${PAYSTACK_SECRET_KEY:-}
+      # No Redis in a single-box deployment — there's only ever one app
+      # process here, so per-process in-memory rate limiting/lockout
+      # (security.py's default) is exactly as effective as a Redis-backed
+      # one would be, at zero extra setup cost.
+      REDIS_URL: ""
+      # Wide open by design — this server is only reachable on the
+      # school's own LAN in the first place, not the public internet.
+      ALLOWED_ORIGINS: "*"
+    volumes:
+      - app_uploads:/app/uploads
+
+volumes:
+  postgres_data:
+  ollama_data:
+  app_uploads:

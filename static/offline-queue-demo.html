@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NaijaSensei — Offline Queue Demo</title>
+<style>
+  :root { --green:#1a6b3f; --green-light:#e8f5ee; --bg:#f5f7f5; --text:#1a1a1a; --muted:#666; --border:#d8ddd9; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); }
+  .wrap { max-width:640px; margin:0 auto; padding:20px 16px 40px; }
+  h1 { font-size:1.25rem; color:var(--green); margin-bottom:2px; }
+  .subtitle { color:var(--muted); font-size:0.88rem; margin-bottom:18px; }
+  .card { background:white; border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:14px; }
+  .card h2 { font-size:0.95rem; margin:0 0 8px; }
+  .card p { font-size:0.85rem; color:var(--muted); line-height:1.5; margin:4px 0; }
+  label { font-size:0.82rem; color:var(--muted); display:block; margin:8px 0 3px; }
+  input, select { width:100%; font-size:0.92rem; padding:9px 11px; border-radius:8px; border:1px solid var(--border); }
+  button { font-size:0.92rem; padding:9px 14px; border-radius:8px; border:1px solid var(--border); background:white; cursor:pointer; }
+  button.primary { background:var(--green); color:white; border:none; font-weight:600; width:100%; margin-top:10px; }
+  button.primary:disabled { background:#9bb9a8; cursor:not-allowed; }
+  button.secondary { width:100%; margin-top:8px; }
+  .row { display:flex; gap:8px; }
+  .row > * { flex:1; }
+  .status-row { display:flex; align-items:center; gap:8px; margin:6px 0; font-size:0.88rem; }
+  .dot { width:9px; height:9px; border-radius:50%; background:#ccc; flex-shrink:0; }
+  .dot.ok { background:#2e9e5b; } .dot.bad { background:#d64545; } .dot.pending { background:#e0a800; }
+  .badge { display:inline-block; font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:999px; text-transform:uppercase; }
+  .badge.net-online { background:#e8f5ee; color:#1a6b3f; }
+  .badge.net-offline { background:#fdeaea; color:#b23c3c; }
+  .badge.pending-count { background:#fff4d9; color:#8a5a00; }
+  #messages { display:flex; flex-direction:column; gap:10px; margin:10px 0; min-height:40px; }
+  .msg { padding:9px 12px; border-radius:10px; font-size:0.9rem; line-height:1.4; max-width:88%; white-space:pre-wrap; }
+  .msg.user { background:var(--green); color:white; align-self:flex-end; }
+  .msg.bot { background:var(--green-light); align-self:flex-start; }
+  .msg.queued::after { content:" · queued"; font-size:0.7rem; opacity:0.7; }
+  .msg.synced::after { content:" · synced ✓"; font-size:0.7rem; opacity:0.7; }
+  #loadLog, #syncLog { font-size:0.76rem; color:var(--muted); margin-top:6px; white-space:pre-wrap; max-height:90px; overflow-y:auto; }
+  progress { width:100%; margin-top:6px; }
+  fieldset { border:none; padding:0; margin:0; }
+  fieldset[disabled] { opacity:0.5; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎓 Offline Queue — End-to-End Demo</h1>
+  <p class="subtitle">
+    On-device chat (runs even with no internet) + a local queue that syncs
+    to your real backend once a connection is available. Test on the
+    device/browser you actually care about.
+  </p>
+
+  <div class="card">
+    <h2>Status</h2>
+    <div class="status-row"><span class="dot" id="dotGpu"></span><span id="txtGpu">Checking WebGPU…</span></div>
+    <div class="status-row">
+      <span class="badge" id="netBadge">—</span>
+      <span class="badge pending-count" id="pendingBadge">0 pending sync</span>
+    </div>
+  </div>
+
+  <div class="card" id="setupCard">
+    <h2>1. Connect to your server</h2>
+    <p>Point this at your deployed NaijaSensei backend, then log in — this uses your real auth.py endpoints.</p>
+    <label>Server URL</label>
+    <input id="apiBase" type="text" placeholder="https://your-naijasensei-server.com" />
+    <div class="row">
+      <div><label>Username</label><input id="loginUser" type="text" /></div>
+      <div><label>Password</label><input id="loginPass" type="password" /></div>
+    </div>
+    <button class="primary" id="loginBtn">Log in</button>
+    <div id="authLog" style="font-size:0.8rem;color:var(--muted);margin-top:6px;"></div>
+  </div>
+
+  <div class="card" id="modelCard" style="display:none;">
+    <h2>2. Load the on-device model</h2>
+    <select id="modelSelect">
+      <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC">Qwen2.5 0.5B (~400MB) — fastest</option>
+      <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC" selected>Llama 3.2 1B (~880MB) — balanced</option>
+    </select>
+    <button class="primary" id="loadBtn">Download &amp; load model</button>
+    <progress id="loadProgress" value="0" max="1" style="display:none;"></progress>
+    <div id="loadLog"></div>
+  </div>
+
+  <div class="card" id="chatCard" style="display:none;">
+    <h2>3. Chat — try it with WiFi/data OFF</h2>
+    <p>Messages generated while offline are queued locally and marked "queued" until they sync.</p>
+    <div id="messages"></div>
+    <div class="row">
+      <input id="chatInput" type="text" placeholder="Ask something…" />
+      <button id="sendBtn" style="flex:0 0 auto;">Send</button>
+    </div>
+  </div>
+
+  <div class="card" id="syncCard" style="display:none;">
+    <h2>4. Verify the sync actually reached the server</h2>
+    <button class="secondary" id="forceSyncBtn">Force sync now</button>
+    <button class="secondary" id="checkStatusBtn">Check server: how many offline messages landed?</button>
+    <div id="syncLog"></div>
+  </div>
+</div>
+
+<script type="module">
+  import * as webllm from "https://esm.run/@mlc-ai/web-llm";
+  import { OfflineQueue } from "./offline-queue.js";
+
+  const $ = (id) => document.getElementById(id);
+  const dotGpu = $("dotGpu"), txtGpu = $("txtGpu"), netBadge = $("netBadge"), pendingBadge = $("pendingBadge");
+
+  // ---- persisted config ----
+  $("apiBase").value = localStorage.getItem("ns_demo_apiBase") || "";
+  let token = localStorage.getItem("ns_demo_token") || null;
+
+  function updateNetBadge() {
+    const online = navigator.onLine;
+    netBadge.textContent = online ? "NETWORK: ONLINE" : "NETWORK: OFFLINE";
+    netBadge.className = "badge " + (online ? "net-online" : "net-offline");
+  }
+  window.addEventListener("online", updateNetBadge);
+  window.addEventListener("offline", updateNetBadge);
+  updateNetBadge();
+
+  (async function checkGPU() {
+    if (!("gpu" in navigator) || !(await navigator.gpu.requestAdapter().catch(() => null))) {
+      dotGpu.className = "dot bad";
+      txtGpu.textContent = "WebGPU not available — on-device model won't run on this browser/device.";
+      return;
+    }
+    dotGpu.className = "dot ok";
+    txtGpu.textContent = "WebGPU supported.";
+  })();
+
+  // ---- 1. Login ----
+  $("loginBtn").addEventListener("click", async () => {
+    const apiBase = $("apiBase").value.replace(/\/$/, "");
+    localStorage.setItem("ns_demo_apiBase", apiBase);
+    const body = new URLSearchParams();
+    body.set("username", $("loginUser").value);
+    body.set("password", $("loginPass").value);
+    $("authLog").textContent = "Logging in…";
+    try {
+      const resp = await fetch(apiBase + "/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+      });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${await resp.text()}`);
+      const data = await resp.json();
+      token = data.access_token;
+      localStorage.setItem("ns_demo_token", token);
+      $("authLog").textContent = `Logged in as ${data.user.username}.`;
+      $("modelCard").style.display = "block";
+      $("syncCard").style.display = "block";
+    } catch (e) {
+      $("authLog").textContent = "Login failed: " + e.message +
+        "\nIf this is a CORS error, temporarily add this page's origin to ALLOWED_ORIGINS on your server.";
+    }
+  });
+
+  // ---- offline queue wiring ----
+  const queue = new OfflineQueue({
+    apiBase: $("apiBase").value.replace(/\/$/, "") || "http://localhost:8000",
+    getToken: () => token,
+    onQueueChange: (count) => { pendingBadge.textContent = `${count} pending sync`; },
+  });
+  // queue.apiBase is a plain string property read directly by trySyncAll(),
+  // so keep it in sync whenever the field changes rather than passing a
+  // function into the constructor (OfflineQueue calls .replace() on it once,
+  // at construction time, expecting a string).
+  $("apiBase").addEventListener("change", () => {
+    queue.apiBase = $("apiBase").value.replace(/\/$/, "");
+    localStorage.setItem("ns_demo_apiBase", queue.apiBase);
+  });
+  queue.startAutoSync();
+
+  // ---- 2. Load model ----
+  let engine = null;
+  $("loadBtn").addEventListener("click", async () => {
+    $("loadBtn").disabled = true;
+    $("modelSelect").disabled = true;
+    $("loadProgress").style.display = "block";
+    const log = (t) => { $("loadLog").textContent += t + "\n"; $("loadLog").scrollTop = 1e9; };
+    try {
+      engine = await webllm.CreateMLCEngine($("modelSelect").value, {
+        initProgressCallback: (r) => { $("loadProgress").value = r.progress || 0; log(r.text); },
+      });
+      log("✅ Ready — running fully on this device.");
+      $("chatCard").style.display = "block";
+    } catch (e) {
+      log("❌ " + e.message);
+      $("loadBtn").disabled = false;
+      $("modelSelect").disabled = false;
+    }
+  });
+
+  // ---- 3. Chat + enqueue ----
+  function addMsg(role, text) {
+    const div = document.createElement("div");
+    div.className = "msg " + role;
+    div.textContent = text;
+    $("messages").appendChild(div);
+    div.scrollIntoView({ behavior: "smooth", block: "end" });
+    return div;
+  }
+
+  async function send() {
+    const text = $("chatInput").value.trim();
+    if (!text || !engine) return;
+    $("chatInput").value = "";
+
+    const userDiv = addMsg("user", text);
+    await queue.enqueue("chat_message", { role: "user", content: text, subject: null, topic: null });
+    userDiv.classList.add("queued");
+
+    const botDiv = addMsg("bot", "…thinking locally…");
+    const reply = await engine.chat.completions.create({
+      messages: [
+        { role: "system", content: "You are a friendly tutor for Nigerian secondary school students. Keep answers short." },
+        { role: "user", content: text },
+      ],
+    });
+    const replyText = reply.choices[0].message.content;
+    botDiv.textContent = replyText;
+    botDiv.classList.add("queued");
+    await queue.enqueue("chat_message", { role: "assistant", content: replyText, subject: null, topic: null });
+  }
+  $("sendBtn").addEventListener("click", send);
+  $("chatInput").addEventListener("keydown", (e) => { if (e.key === "Enter") send(); });
+
+  // ---- 4. Verify sync ----
+  $("forceSyncBtn").addEventListener("click", async () => {
+    $("syncLog").textContent = "Syncing…";
+    await queue.trySyncAll();
+    $("syncLog").textContent = navigator.onLine
+      ? "Sync attempted — check the pending count above."
+      : "Still offline — nothing to sync yet. Reconnect and try again.";
+  });
+
+  $("checkStatusBtn").addEventListener("click", async () => {
+    const apiBase = $("apiBase").value.replace(/\/$/, "");
+    try {
+      const resp = await fetch(apiBase + "/sync/status", { headers: { Authorization: `Bearer ${token}` } });
+      const data = await resp.json();
+      $("syncLog").textContent = `Server confirms ${data.offline_synced_message_count} offline-synced message(s) saved for this account.`;
+    } catch (e) {
+      $("syncLog").textContent = "Couldn't reach server: " + e.message;
+    }
+  });
+</script>
+</body>
+</html>

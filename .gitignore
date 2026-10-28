@@ -1,0 +1,15 @@
+.env
+.env.*
+*.pem
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.db
+*.sqlite
+*.sqlite3
+chroma*/
+uploads/
+backup*.sql
+chat_history_backup_*.csv
+node_modules/

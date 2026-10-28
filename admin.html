@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NaijaSensei — Admin</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>" />
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:system-ui,-apple-system,sans-serif;background:#12161c;color:#e4e7eb;min-height:100vh;}
+  a{color:inherit;}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:#2c333e;border-radius:4px;}
+
+  /* ── Login gate ─────────────────────────────────────────── */
+  #login-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#12161c;}
+  .login-card{background:#1a2029;border:1px solid #262e3a;border-radius:16px;padding:2.2rem;width:100%;max-width:360px;text-align:center;}
+  .login-card h1{color:#27ae60;font-size:1.5rem;margin-bottom:0.3rem;}
+  .login-card p{color:#8b94a3;font-size:0.85rem;margin-bottom:1.5rem;}
+  .login-card input{width:100%;padding:0.7rem 0.9rem;border-radius:8px;border:1px solid #2c333e;background:#12161c;color:#e4e7eb;font-size:0.95rem;outline:none;margin-bottom:0.9rem;}
+  .login-card input:focus{border-color:#27ae60;}
+  .login-card button{width:100%;padding:0.75rem;border:none;border-radius:8px;background:#27ae60;color:#fff;font-weight:600;cursor:pointer;font-size:0.95rem;}
+  .login-card button:hover{background:#219150;}
+  .login-err{color:#e74c3c;font-size:0.8rem;margin-top:0.8rem;min-height:1.1em;}
+
+  /* ── App shell ──────────────────────────────────────────── */
+  #app{display:none;min-height:100vh;flex-direction:column;}
+  #app.active{display:flex;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 1.4rem;border-bottom:1px solid #232a34;background:#161b22;flex-wrap:wrap;gap:0.6rem;}
+  header h1{font-size:1.15rem;color:#27ae60;}
+  header .sub{color:#8b94a3;font-size:0.78rem;}
+  .logout-link{color:#8b94a3;font-size:0.78rem;text-decoration:underline;cursor:pointer;background:none;border:none;}
+  .logout-link:hover{color:#e74c3c;}
+
+  nav{display:flex;gap:0.3rem;padding:0.6rem 1.4rem;background:#161b22;border-bottom:1px solid #232a34;overflow-x:auto;flex-wrap:wrap;}
+  .nav-tab{padding:0.5rem 0.9rem;border-radius:8px;background:transparent;border:none;color:#8b94a3;font-size:0.82rem;font-weight:600;cursor:pointer;white-space:nowrap;}
+  .nav-tab:hover{color:#e4e7eb;background:#1e2530;}
+  .nav-tab.active{background:#1a3a2a;color:#27ae60;}
+
+  main{flex:1;padding:1.4rem;max-width:1200px;width:100%;margin:0 auto;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0.9rem;margin-bottom:1.2rem;}
+  .stat-card{background:#1a2029;border:1px solid #232a34;border-radius:12px;padding:1rem 1.1rem;}
+  .stat-card .label{color:#8b94a3;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.35rem;}
+  .stat-card .value{font-size:1.6rem;font-weight:700;color:#e4e7eb;}
+  .stat-card .sub{color:#6b7482;font-size:0.75rem;margin-top:0.2rem;}
+  .stat-card.accent .value{color:#27ae60;}
+  .stat-card.warn .value{color:#e0a030;}
+  .stat-card.danger .value{color:#e74c3c;}
+
+  .card{background:#1a2029;border:1px solid #232a34;border-radius:12px;padding:1.1rem;margin-bottom:1rem;}
+  .card h2{font-size:1rem;color:#e4e7eb;margin-bottom:0.9rem;display:flex;align-items:center;gap:0.5rem;justify-content:space-between;flex-wrap:wrap;}
+  .card h2 .hint{color:#6b7482;font-size:0.72rem;font-weight:400;}
+
+  table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+  th{text-align:left;color:#8b94a3;font-weight:600;padding:0.5rem 0.6rem;border-bottom:1px solid #232a34;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.03em;}
+  td{padding:0.55rem 0.6rem;border-bottom:1px solid #1d232c;vertical-align:top;}
+  tr:hover td{background:#1e2530;}
+  .table-wrap{overflow-x:auto;}
+
+  .pill{display:inline-flex;align-items:center;padding:0.2rem 0.6rem;border-radius:20px;font-size:0.72rem;font-weight:600;}
+  .pill-green{background:#16321f;color:#27ae60;}
+  .pill-blue{background:#132a3a;color:#3498db;}
+  .pill-gold{background:#332a10;color:#e0a030;}
+  .pill-red{background:#3a1616;color:#e74c3c;}
+  .pill-grey{background:#232a34;color:#8b94a3;}
+
+  select,input[type=text],input[type=password],textarea{background:#12161c;border:1px solid #2c333e;color:#e4e7eb;border-radius:8px;padding:0.45rem 0.7rem;font-size:0.82rem;outline:none;}
+  select:focus,input:focus,textarea:focus{border-color:#27ae60;}
+  button.btn{background:#27ae60;color:#fff;border:none;border-radius:8px;padding:0.5rem 0.9rem;font-size:0.8rem;font-weight:600;cursor:pointer;}
+  button.btn:hover{background:#219150;}
+  button.btn.secondary{background:#232a34;color:#e4e7eb;}
+  button.btn.secondary:hover{background:#2c333e;}
+  button.btn.danger{background:#3a1616;color:#e74c3c;}
+  button.btn.danger:hover{background:#4a1c1c;}
+  button.btn:disabled{background:#2c333e;color:#6b7482;cursor:not-allowed;}
+  button.icon-btn{background:none;border:none;color:#8b94a3;cursor:pointer;font-size:0.95rem;padding:0.2rem 0.4rem;}
+  button.icon-btn:hover{color:#e74c3c;}
+
+  .row{display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;}
+  .empty{color:#6b7482;font-size:0.85rem;text-align:center;padding:1.5rem 0;}
+  .loading{color:#6b7482;font-size:0.85rem;text-align:center;padding:1.5rem 0;}
+  .toast{position:fixed;bottom:1.2rem;right:1.2rem;background:#1a2029;border:1px solid #27ae60;color:#e4e7eb;padding:0.7rem 1rem;border-radius:8px;font-size:0.85rem;z-index:2000;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
+  .toast.error{border-color:#e74c3c;}
+  .bar-track{background:#232a34;border-radius:5px;height:8px;overflow:hidden;width:100%;}
+  .bar-fill{height:100%;background:#27ae60;}
+  .mini-bars{display:flex;align-items:flex-end;gap:2px;height:60px;}
+  .mini-bar{flex:1;background:#27ae60;border-radius:2px 2px 0 0;min-height:2px;}
+  code.pw{background:#12161c;border:1px solid #2c333e;padding:0.15rem 0.45rem;border-radius:5px;font-size:0.78rem;color:#e0a030;}
+</style>
+</head>
+<body>
+
+<!-- ── Login gate ── -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>🎓 NaijaSensei</h1>
+    <p>Admin Panel — enter your admin password</p>
+    <input id="admin-pw-input" type="password" placeholder="Admin password" onkeydown="if(event.key==='Enter')adminLogin()" />
+    <button onclick="adminLogin()">Enter Dashboard</button>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- ── App shell ── -->
+<div id="app">
+  <header>
+    <div>
+      <h1>🎓 NaijaSensei Admin</h1>
+      <div class="sub">Owner dashboard</div>
+    </div>
+    <button class="logout-link" onclick="adminLogout()">Log out</button>
+  </header>
+
+  <nav id="nav-tabs">
+    <button class="nav-tab active" data-tab="overview" onclick="switchTab('overview')">📊 Overview</button>
+    <button class="nav-tab" data-tab="users" onclick="switchTab('users')">👥 Users</button>
+    <button class="nav-tab" data-tab="exams" onclick="switchTab('exams')">📝 Exams</button>
+    <button class="nav-tab" data-tab="signups" onclick="switchTab('signups')">📈 Signups</button>
+    <button class="nav-tab" data-tab="chat" onclick="switchTab('chat')">💬 Chat</button>
+    <button class="nav-tab" data-tab="classes" onclick="switchTab('classes')">🏫 Classes</button>
+    <button class="nav-tab" data-tab="broadcasts" onclick="switchTab('broadcasts')">📢 Broadcasts</button>
+    <button class="nav-tab" data-tab="topics" onclick="switchTab('topics')">📌 Topics</button>
+    <button class="nav-tab" data-tab="provider-health" onclick="switchTab('provider-health')">🩺 Provider Health</button>
+    <button class="nav-tab" data-tab="api-costs" onclick="switchTab('api-costs')">💰 API Costs</button>
+    <button class="nav-tab" data-tab="classroom" onclick="switchTab('classroom')">🖥️ Classroom</button>
+    <button class="nav-tab" data-tab="codes" onclick="switchTab('codes')">🎟️ Codes</button>
+  </nav>
+
+  <main>
+
+    <!-- ═══ Overview ═══ -->
+    <div class="tab-panel active" id="tab-overview">
+      <div class="grid" id="overview-stats"><div class="loading">Loading overview…</div></div>
+    </div>
+
+    <!-- ═══ Users ═══ -->
+    <div class="tab-panel" id="tab-users">
+      <div class="card">
+        <h2>All registered users <span class="hint" id="users-count"></span></h2>
+        <div class="table-wrap"><table id="users-table"><thead>
+          <tr><th>Name</th><th>Username</th><th>Role</th><th>Exams</th><th>Avg Score</th><th>Messages</th><th>Last Active</th><th>Registered</th><th></th></tr>
+        </thead><tbody><tr><td colspan="9" class="loading">Loading users…</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ═══ Exams ═══ -->
+    <div class="tab-panel" id="tab-exams">
+      <div class="card">
+        <h2>Per-subject performance</h2>
+        <div class="table-wrap"><table id="exam-subjects-table"><thead>
+          <tr><th>Subject</th><th>Exams Taken</th><th>Avg Score</th><th>Pass Rate</th></tr>
+        </thead><tbody><tr><td colspan="4" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>Daily exams (last 30 days)</h2>
+        <div id="exam-trend-chart"></div>
+      </div>
+      <div class="card">
+        <h2>Recent exams</h2>
+        <div class="table-wrap"><table id="recent-exams-table"><thead>
+          <tr><th>Student</th><th>Subjects</th><th>Score</th><th>Submitted</th></tr>
+        </thead><tbody><tr><td colspan="4" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ═══ Signups ═══ -->
+    <div class="tab-panel" id="tab-signups">
+      <div class="card">
+        <h2>Daily signups (last 30 days)</h2>
+        <div id="signups-chart"></div>
+      </div>
+    </div>
+
+    <!-- ═══ Chat Activity ═══ -->
+    <div class="tab-panel" id="tab-chat">
+      <div class="card">
+        <h2>Daily messages (last 30 days)</h2>
+        <div id="chat-trend-chart"></div>
+      </div>
+      <div class="card">
+        <h2>Most active users</h2>
+        <div class="table-wrap"><table id="top-users-table"><thead>
+          <tr><th>Name</th><th>Username</th><th>Role</th><th>Messages</th></tr>
+        </thead><tbody><tr><td colspan="4" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ═══ Classes ═══ -->
+    <div class="tab-panel" id="tab-classes">
+      <div class="card">
+        <h2>All classes</h2>
+        <div class="table-wrap"><table id="classes-table"><thead>
+          <tr><th>Class</th><th>Teacher</th><th>Students</th><th>Invite Code</th><th>Created</th></tr>
+        </thead><tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ═══ Broadcasts ═══ -->
+    <div class="tab-panel" id="tab-broadcasts">
+      <div class="card">
+        <h2>🎉 Announce WAEC results
+          <span class="hint">Auto-sends to students only, asking them to report their real grade in Pass Predictor</span>
+        </h2>
+        <div class="row">
+          <input type="text" id="waec-year" placeholder="Exam year (e.g. 2026)" style="width:180px;" />
+          <button class="btn" onclick="announceWaecResults()" id="waec-announce-btn">📣 Announce Results Are Out</button>
+        </div>
+        <div class="login-err" id="waec-announce-err"></div>
+      </div>
+
+      <div class="card">
+        <h2>📅 Set WAEC end date
+          <span class="hint">Not the same as announcing results above — this is the date the exam ITSELF ended. Chat history for every student clears automatically 3 months after this date.</span>
+        </h2>
+        <div class="row">
+          <input type="date" id="waec-end-date-input" style="width:180px;" />
+          <button class="btn" onclick="setWaecEndDate()" id="waec-end-date-btn">📅 Set End Date</button>
+        </div>
+        <div id="waec-end-date-current" class="hint" style="margin-top:0.5rem;"></div>
+        <div class="login-err" id="waec-end-date-err"></div>
+      </div>
+      <div class="card">
+        <h2>Send a broadcast</h2>
+        <div class="row" style="margin-bottom:0.6rem;">
+          <select id="bc-target">
+            <option value="all">Everyone</option>
+            <option value="students">Students only</option>
+            <option value="teachers">Teachers only</option>
+            <option value="parents">Parents only</option>
+          </select>
+          <input type="text" id="bc-label" placeholder="Sender label" value="NaijaSensei Admin" style="flex:1;min-width:160px;" />
+        </div>
+        <textarea id="bc-message" rows="3" placeholder="Announcement message…" style="width:100%;margin-bottom:0.6rem;resize:vertical;"></textarea>
+        <button class="btn" onclick="sendBroadcast()" id="bc-send-btn">Send Broadcast</button>
+        <div class="login-err" id="bc-err"></div>
+      </div>
+      <div class="card">
+        <h2>Broadcast history</h2>
+        <div class="table-wrap"><table id="broadcasts-table"><thead>
+          <tr><th>Message</th><th>Target</th><th>Sender</th><th>Read</th><th>Sent</th></tr>
+        </thead><tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ═══ Topics ═══ -->
+    <div class="tab-panel" id="tab-topics">
+      <div class="card">
+        <h2>Add a topic</h2>
+        <div class="row">
+          <input type="text" id="topic-subject" placeholder="Subject (e.g. Mathematics)" style="flex:1;min-width:160px;" />
+          <input type="text" id="topic-name" placeholder="Topic (e.g. Quadratic Equations)" style="flex:1;min-width:200px;" />
+          <button class="btn" onclick="addAdminTopic()">➕ Add Topic</button>
+        </div>
+        <div class="login-err" id="topic-err"></div>
+      </div>
+      <div class="card">
+        <h2>Sync from curriculum <span class="hint">bulk-add every topic already in curriculum.py + generated_curriculum.py</span></h2>
+        <div style="font-size:0.8rem;color:#8b94a3;margin-bottom:0.8rem;">
+          Adds one topic per unique (subject, topic) pair already in the curriculum corpus. Safe to re-run — existing topics
+          are left untouched. Since a synced topic IS the curriculum's own label, it's guaranteed a "strong" result on the
+          coverage check below, unlike a hand-typed topic which might not closely match anything.
+        </div>
+        <button class="btn" onclick="syncTopicsFromCurriculum()" id="sync-topics-btn">🔄 Sync Topics from Curriculum</button>
+        <div id="sync-result" style="margin-top:0.6rem;font-size:0.82rem;"></div>
+      </div>
+      <div class="card">
+        <h2>All topics <span class="hint">filter by subject</span></h2>
+        <input type="text" id="topic-filter" placeholder="Filter by subject…" style="margin-bottom:0.8rem;width:100%;max-width:300px;" oninput="renderTopics()" />
+        <div class="table-wrap"><table id="topics-table"><thead>
+          <tr><th>Subject</th><th>Topic</th><th>Added</th><th></th></tr>
+        </thead><tbody><tr><td colspan="4" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>RAG coverage check <span class="hint">does each topic actually retrieve grounded content?</span></h2>
+        <div style="font-size:0.8rem;color:#8b94a3;margin-bottom:0.8rem;">
+          Checks every topic above against the curriculum corpus (curriculum.py + generated_curriculum.py) using the same
+          fuzzy topic-match scoring the chat's retrieval uses. "None"/"Weak" doesn't mean the AI can't answer —
+          it means this specific topic won't pull anything targeted, only general subject content.
+        </div>
+        <button class="btn secondary" onclick="loadTopicCoverage()" id="coverage-btn">🔍 Check Coverage</button>
+        <div id="coverage-summary" style="margin-top:0.8rem;"></div>
+        <div class="table-wrap" style="margin-top:0.8rem;"><table id="coverage-table"><thead>
+          <tr><th>Subject</th><th>Topic</th><th>Coverage</th><th>Best Match</th><th>Score</th></tr>
+        </thead><tbody></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ═══ Provider Health ═══ -->
+    <div class="tab-panel" id="tab-provider-health">
+      <div class="card">
+        <h2>Last 24 hours</h2>
+        <div class="table-wrap"><table id="provider-24h-table"><thead>
+          <tr><th>Provider</th><th>Success</th><th>Empty</th><th>Error</th><th>Total</th><th>Success Rate</th></tr>
+        </thead><tbody><tr><td colspan="6" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>Last 7 days</h2>
+        <div class="table-wrap"><table id="provider-7d-table"><thead>
+          <tr><th>Provider</th><th>Success</th><th>Empty</th><th>Error</th><th>Total</th><th>Success Rate</th></tr>
+        </thead><tbody><tr><td colspan="6" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+      <div class="card">
+        <h2>Recent errors <span class="hint">last 30</span></h2>
+        <div class="table-wrap"><table id="provider-errors-table"><thead>
+          <tr><th>Provider</th><th>Detail</th><th>When</th></tr>
+        </thead><tbody><tr><td colspan="3" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ═══ API Costs ═══ -->
+    <div class="tab-panel" id="tab-api-costs">
+      <div class="grid" id="cost-stats"><div class="loading">Loading spend…</div></div>
+      <div class="card">
+        <h2>By provider <span class="hint">all-time</span></h2>
+        <div class="table-wrap"><table id="cost-provider-table"><thead>
+          <tr><th>Provider</th><th>Calls</th><th>Cost (USD)</th><th>Tokens / Characters</th><th>Estimated calls</th></tr>
+        </thead><tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody></table></div>
+        <div class="hint" style="margin-top:0.6rem;display:block;">"Estimated calls" means Mistral didn't return exact token counts for that call, so cost was approximated from character count (~4 chars/token) instead of billed usage. ElevenLabs character counts are always exact.</div>
+      </div>
+      <div class="card">
+        <h2>Daily spend <span class="hint">last 30 days, USD</span></h2>
+        <div id="cost-trend-chart"></div>
+      </div>
+    </div>
+
+    <!-- ═══ Classroom ═══ -->
+    <div class="tab-panel" id="tab-classroom">
+      <div class="grid" id="classroom-stats"><div class="loading">Loading classroom stats…</div></div>
+      <div class="card">
+        <h2>Top subjects in Classroom</h2>
+        <div id="classroom-top-subjects"></div>
+      </div>
+      <div class="card">
+        <h2>Recent sessions</h2>
+        <div class="table-wrap"><table id="classroom-sessions-table"><thead>
+          <tr><th>Student</th><th>Status</th><th>Exchanges</th><th>Subjects</th><th>Started</th></tr>
+        </thead><tbody><tr><td colspan="5" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ═══ Codes ═══ -->
+    <div class="tab-panel" id="tab-codes">
+      <div class="card">
+        <h2>Generate redemption codes <span class="hint">for offline sales — bank transfer, agents, schools</span></h2>
+        <div style="font-size:0.8rem;color:#8b94a3;margin-bottom:0.9rem;">
+          Each code activates the chosen plan once, for whoever redeems it in the app. Codes are shown in plaintext
+          <strong style="color:#e0a030;">only once, right here, right after generating</strong> — they're stored hashed and can
+          never be shown again, so copy them before navigating away.
+        </div>
+        <div class="row" style="margin-bottom:0.6rem;">
+          <select id="code-plan">
+            <option value="monthly">Monthly — ₦5,000</option>
+            <option value="termly">Termly (3 months) — ₦12,000</option>
+            <option value="annual" selected>WAEC Season / Annual (12 months) — ₦40,000</option>
+            <option value="trial">Free Trial (1 month) — ₦0</option>
+          </select>
+          <input type="text" id="code-count" placeholder="How many? (1–500)" value="1" style="width:150px;" />
+          <input type="text" id="code-validity" placeholder="Valid for (days)" value="180" style="width:150px;" />
+        </div>
+        <input type="text" id="code-note" placeholder="Batch note — e.g. school name or agent (optional)" style="width:100%;margin-bottom:0.6rem;" />
+        <button class="btn" onclick="generateCodes()" id="gen-codes-btn">🎟️ Generate Codes</button>
+        <div class="login-err" id="code-gen-err"></div>
+
+        <div id="codes-result" style="display:none;margin-top:1rem;background:#12161c;border:1px solid #332a10;border-radius:10px;padding:1rem;">
+          <div class="row" style="justify-content:space-between;margin-bottom:0.6rem;">
+            <span class="pill pill-gold">⚠️ Shown once — save these now</span>
+            <button class="btn secondary" onclick="copyGeneratedCodes()">📋 Copy All</button>
+          </div>
+          <div id="codes-result-list" style="font-family:monospace;font-size:0.85rem;line-height:1.9;color:#e0a030;max-height:260px;overflow-y:auto;"></div>
+          <div id="codes-result-meta" style="font-size:0.75rem;color:#6b7482;margin-top:0.6rem;"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>All codes <span class="hint" id="codes-count"></span></h2>
+        <div class="table-wrap"><table id="codes-table"><thead>
+          <tr><th>Plan</th><th>Batch Note</th><th>Issued By</th><th>Status</th><th>Used At</th><th>Created</th><th>Expires</th></tr>
+        </thead><tbody><tr><td colspan="7" class="loading">Loading…</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+  </main>
+  <div style="text-align:center;padding:1.2rem 0 1.5rem;font-size:0.8rem;font-weight:500;color:#e4e7eb;border-top:1px solid #232a34;margin-top:1rem;">
+    Created by Goodness Odewenwa &nbsp;•&nbsp; &copy; <span id="admin-footer-year"></span> NaijaSensei. All rights reserved.
+  </div>
+</div>
+
+<script>
+  const API = window.location.origin;
+  let ADMIN_PW = sessionStorage.getItem("ns_admin_pw") || "";
+  let allTopics = [];
+  const loadedTabs = new Set();
+
+  // ── Auth ────────────────────────────────────────────────────────────────
+  async function adminFetch(path, options = {}) {
+    const res = await fetch(`${API}${path}`, {
+      ...options,
+      headers: { ...(options.headers || {}), "X-Admin-Password": ADMIN_PW },
+    });
+    if (res.status === 401) {
+      sessionStorage.removeItem("ns_admin_pw");
+      document.getElementById("app").classList.remove("active");
+      document.getElementById("login-screen").style.display = "flex";
+      document.getElementById("login-err").textContent = "Session expired — please log in again.";
+      throw new Error("Unauthorized");
+    }
+    return res;
+  }
+
+  async function adminLogin() {
+    const pw = document.getElementById("admin-pw-input").value;
+    const errEl = document.getElementById("login-err");
+    if (!pw) { errEl.textContent = "Enter the admin password."; return; }
+    errEl.textContent = "";
+    try {
+      const res = await fetch(`${API}/admin/stats`, { headers: { "X-Admin-Password": pw } });
+      if (!res.ok) { errEl.textContent = "Incorrect password."; return; }
+      ADMIN_PW = pw;
+      sessionStorage.setItem("ns_admin_pw", pw);
+      enterApp();
+    } catch (e) {
+      errEl.textContent = "Could not reach the server. Is it running?";
+    }
+  }
+
+  function adminLogout() {
+    sessionStorage.removeItem("ns_admin_pw");
+    ADMIN_PW = "";
+    loadedTabs.clear();
+    document.getElementById("app").classList.remove("active");
+    document.getElementById("login-screen").style.display = "flex";
+    document.getElementById("admin-pw-input").value = "";
+  }
+
+  function enterApp() {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("app").classList.add("active");
+    switchTab("overview");
+  }
+
+  // Auto-login if a password is already stored in this tab's session
+  const _adminFooterYearEl = document.getElementById("admin-footer-year");
+  if (_adminFooterYearEl) _adminFooterYearEl.textContent = new Date().getFullYear();
+
+  if (ADMIN_PW) {
+    fetch(`${API}/admin/stats`, { headers: { "X-Admin-Password": ADMIN_PW } })
+      .then(res => { if (res.ok) enterApp(); })
+      .catch(() => {});
+  }
+
+  // ── Tab switching (lazy-loads each tab's data on first view) ────────────
+  function switchTab(name) {
+    document.querySelectorAll(".nav-tab").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === `tab-${name}`));
+    if (loadedTabs.has(name)) return;
+    loadedTabs.add(name);
+    const loaders = {
+      overview: loadOverview, users: loadUsers, exams: loadExams,
+      signups: loadSignups, chat: loadChatActivity, classes: loadClasses,
+      broadcasts: loadBroadcasts, topics: loadTopics,
+      "provider-health": loadProviderHealth, "api-costs": loadApiCosts, classroom: loadClassroomAdmin,
+      codes: loadCodes,
+    };
+    loaders[name]?.();
+  }
+
+  function toast(msg, type = "success") {
+    const el = document.createElement("div");
+    el.className = "toast" + (type === "error" ? " error" : "");
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3200);
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return "—";
+    try { return new Date(iso.replace(" ", "T") + "Z").toLocaleString(); } catch { return iso; }
+  }
+  function fmtDateShort(iso) {
+    if (!iso) return "—";
+    try { return new Date(iso.replace(" ", "T") + "Z").toLocaleDateString(); } catch { return iso; }
+  }
+  function esc(s) { return (s ?? "").toString().replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  function simpleBarChart(containerId, data, labelKey, valueKey) {
+    const el = document.getElementById(containerId);
+    if (!data || !data.length) { el.innerHTML = '<div class="empty">No data yet.</div>'; return; }
+    const max = Math.max(...data.map(d => d[valueKey]), 1);
+    el.innerHTML = `<div class="mini-bars">` + data.map(d =>
+      `<div class="mini-bar" style="height:${Math.max(4, d[valueKey] / max * 60)}px" title="${esc(d[labelKey])}: ${d[valueKey]}"></div>`
+    ).join("") + `</div>
+    <div class="row" style="justify-content:space-between;margin-top:0.4rem;color:#6b7482;font-size:0.68rem;">
+      <span>${esc(data[0][labelKey])}</span><span>${esc(data[data.length-1][labelKey])}</span>
+    </div>`;
+  }
+
+  // ── Overview ──────────────────────────────────────────────────────────
+  async function loadOverview() {
+    try {
+      const res = await adminFetch("/admin/stats");
+      const d = await res.json();
+      document.getElementById("overview-stats").innerHTML = `
+        <div class="stat-card accent"><div class="label">Total Users</div><div class="value">${d.users.total}</div>
+          <div class="sub">${d.users.by_role.student||0} students · ${d.users.by_role.teacher||0} teachers · ${d.users.by_role.parent||0} parents</div></div>
+        <div class="stat-card"><div class="label">New Signups</div><div class="value">${d.users.new_7d}</div>
+          <div class="sub">${d.users.new_30d} in last 30 days</div></div>
+        <div class="stat-card"><div class="label">Active (7d)</div><div class="value">${d.users.active_7d}</div>
+          <div class="sub">chatted or exam in last week</div></div>
+        <div class="stat-card"><div class="label">Total Exams</div><div class="value">${d.exams.total}</div>
+          <div class="sub">${d.exams.last_7d} in last 7 days</div></div>
+        <div class="stat-card"><div class="label">Avg Score</div><div class="value">${d.exams.avg_score_pct ?? "—"}%</div>
+          <div class="sub">${d.exams.pass_rate_pct ?? "—"}% pass rate</div></div>
+        <div class="stat-card"><div class="label">Chat Messages</div><div class="value">${d.chat.total_messages}</div>
+          <div class="sub">${d.chat.messages_7d} in last 7 days</div></div>
+        <div class="stat-card warn"><div class="label">Premium Users</div><div class="value">${d.premium.total}</div>
+          <div class="sub">${d.premium.pct_of_users}% of all users · ${d.premium.new_7d} new in last 7 days${
+            Object.keys(d.premium.by_plan).length
+              ? " · " + Object.entries(d.premium.by_plan).map(([plan,c]) => `${plan}: ${c}`).join(", ")
+              : ""
+          }</div></div>`;
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load overview", "error"); }
+  }
+
+  // ── Users ─────────────────────────────────────────────────────────────
+  async function loadUsers() {
+    try {
+      const res = await adminFetch("/admin/users");
+      const d = await res.json();
+      document.getElementById("users-count").textContent = `${d.users.length} total`;
+      const tbody = document.querySelector("#users-table tbody");
+      if (!d.users.length) { tbody.innerHTML = '<tr><td colspan="9" class="empty">No users yet.</td></tr>'; return; }
+      const rolePill = r => ({student:"pill-green",teacher:"pill-blue",parent:"pill-gold",admin:"pill-red"}[r]||"pill-grey");
+      tbody.innerHTML = d.users.map(u => `
+        <tr>
+          <td>${esc(u.full_name || "—")}</td>
+          <td>${esc(u.username)}</td>
+          <td>
+            <select onchange="changeUserRole(${u.id}, this.value)" style="font-size:0.75rem;padding:0.25rem 0.4rem;">
+              ${["student","teacher","parent","admin"].map(r => `<option value="${r}" ${r===u.role?"selected":""}>${r}</option>`).join("")}
+            </select>
+          </td>
+          <td>${u.exams_taken}</td>
+          <td>${u.avg_score != null ? u.avg_score + "%" : "—"}</td>
+          <td>${u.messages_sent}</td>
+          <td>${fmtDateShort(u.last_active)}</td>
+          <td>${fmtDateShort(u.registered_at)}</td>
+          <td><button class="icon-btn" title="Delete user" onclick="deleteUser(${u.id}, '${esc(u.username)}')">🗑</button></td>
+        </tr>`).join("");
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load users", "error"); }
+  }
+
+  async function changeUserRole(id, role) {
+    try {
+      const res = await adminFetch(`/admin/users/${id}`, {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role }),
+      });
+      if (!res.ok) throw new Error();
+      toast("Role updated.");
+    } catch { toast("Could not update role.", "error"); loadedTabs.delete("users"); loadUsers(); }
+  }
+
+  async function deleteUser(id, username) {
+    if (!confirm(`Permanently delete user "${username}" and all their data? This cannot be undone.`)) return;
+    try {
+      const res = await adminFetch(`/admin/users/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      toast("User deleted.");
+      loadedTabs.delete("users"); loadUsers();
+    } catch { toast("Could not delete user.", "error"); }
+  }
+
+  // ── Exams ─────────────────────────────────────────────────────────────
+  async function loadExams() {
+    try {
+      const res = await adminFetch("/admin/exams");
+      const d = await res.json();
+      const subjBody = document.querySelector("#exam-subjects-table tbody");
+      subjBody.innerHTML = d.subject_stats.length ? d.subject_stats.map(s => `
+        <tr><td>${esc(s.subject)}</td><td>${s.exam_count}</td>
+          <td>${s.avg_score ?? "—"}%</td>
+          <td>${s.pass_rate ?? "—"}%</td></tr>`).join("")
+        : '<tr><td colspan="4" class="empty">No exam data yet.</td></tr>';
+
+      simpleBarChart("exam-trend-chart", d.daily_trend, "date", "count");
+
+      const recentBody = document.querySelector("#recent-exams-table tbody");
+      recentBody.innerHTML = d.recent_exams.length ? d.recent_exams.map(e => `
+        <tr><td>${esc(e.student)}</td><td>${esc((e.subjects||[]).join(", "))}</td>
+          <td>${e.score_pct ?? "—"}%</td><td>${fmtDate(e.submitted_at)}</td></tr>`).join("")
+        : '<tr><td colspan="4" class="empty">No exams yet.</td></tr>';
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load exam analytics", "error"); }
+  }
+
+  // ── Signups ───────────────────────────────────────────────────────────
+  async function loadSignups() {
+    try {
+      const res = await adminFetch("/admin/signups");
+      const d = await res.json();
+      simpleBarChart("signups-chart", d.signups, "date", "count");
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load signups", "error"); }
+  }
+
+  // ── Chat activity ─────────────────────────────────────────────────────
+  async function loadChatActivity() {
+    try {
+      const res = await adminFetch("/admin/chat-activity");
+      const d = await res.json();
+      simpleBarChart("chat-trend-chart", d.daily_messages, "date", "count");
+      const tbody = document.querySelector("#top-users-table tbody");
+      tbody.innerHTML = d.top_users.length ? d.top_users.map(u => `
+        <tr><td>${esc(u.full_name || "—")}</td><td>${esc(u.username)}</td>
+          <td><span class="pill pill-grey">${esc(u.role)}</span></td><td>${u.msg_count}</td></tr>`).join("")
+        : '<tr><td colspan="4" class="empty">No chat activity yet.</td></tr>';
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load chat activity", "error"); }
+  }
+
+  // ── Classes ───────────────────────────────────────────────────────────
+  async function loadClasses() {
+    try {
+      const res = await adminFetch("/admin/classes");
+      const d = await res.json();
+      const tbody = document.querySelector("#classes-table tbody");
+      tbody.innerHTML = d.classes.length ? d.classes.map(c => `
+        <tr><td>${esc(c.name)}</td><td>${esc(c.teacher_name || c.teacher)}</td>
+          <td>${c.student_count}</td><td><code class="pw">${esc(c.invite_code)}</code></td>
+          <td>${fmtDateShort(c.created_at)}</td></tr>`).join("")
+        : '<tr><td colspan="5" class="empty">No classes created yet.</td></tr>';
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load classes", "error"); }
+  }
+
+  // ── Broadcasts ────────────────────────────────────────────────────────
+  async function announceWaecResults() {
+    const yearInput = document.getElementById("waec-year");
+    const year = yearInput.value.trim();
+    const errEl = document.getElementById("waec-announce-err");
+    const btn = document.getElementById("waec-announce-btn");
+    if (!year) { errEl.textContent = "Enter the exam year first."; return; }
+    errEl.textContent = "";
+    btn.disabled = true; btn.textContent = "Sending…";
+    try {
+      const res = await adminFetch("/admin/waec-results-announcement", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ exam_year: year }),
+      });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.detail || "Could not send announcement.");
+      yearInput.value = "";
+      toast(`${year} results announcement sent to all students 🎉`);
+      loadedTabs.delete("broadcasts"); loadBroadcasts();
+    } catch (e) { errEl.textContent = e.message; }
+    finally { btn.disabled = false; btn.textContent = "📣 Announce Results Are Out"; }
+  }
+
+  async function sendBroadcast() {
+    const message = document.getElementById("bc-message").value.trim();
+    const target = document.getElementById("bc-target").value;
+    const sender_label = document.getElementById("bc-label").value.trim() || "NaijaSensei Admin";
+    const errEl = document.getElementById("bc-err");
+    const btn = document.getElementById("bc-send-btn");
+    if (!message) { errEl.textContent = "Message can't be empty."; return; }
+    errEl.textContent = "";
+    btn.disabled = true; btn.textContent = "Sending…";
+    try {
+      const res = await adminFetch("/admin/broadcast", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, target, sender_label }),
+      });
+      if (!res.ok) throw new Error();
+      document.getElementById("bc-message").value = "";
+      toast("Broadcast sent.");
+      loadedTabs.delete("broadcasts"); loadBroadcasts();
+    } catch { errEl.textContent = "Could not send broadcast."; }
+    finally { btn.disabled = false; btn.textContent = "Send Broadcast"; }
+  }
+
+  async function loadBroadcasts() {
+    try {
+      const res = await adminFetch("/admin/broadcasts");
+      const d = await res.json();
+      const tbody = document.querySelector("#broadcasts-table tbody");
+      tbody.innerHTML = d.broadcasts.length ? d.broadcasts.map(b => `
+        <tr><td style="max-width:320px;">${esc(b.message)}</td>
+          <td><span class="pill ${b.sender_type==='teacher'?'pill-blue':'pill-gold'}">${esc(b.target)}</span></td>
+          <td>${esc(b.sender_label)}</td><td>${b.read_count}</td><td>${fmtDate(b.sent_at)}</td></tr>`).join("")
+        : '<tr><td colspan="5" class="empty">No broadcasts sent yet.</td></tr>';
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load broadcasts", "error"); }
+    loadWaecEndDate();
+  }
+
+  // ── WAEC end date (chat-history expiry trigger — see admin.py's docstring
+  // for why this is a separate thing from "announce results are out" above) ──
+  async function loadWaecEndDate() {
+    const el = document.getElementById("waec-end-date-current");
+    try {
+      const res = await adminFetch("/admin/waec-end-date");
+      const d = await res.json();
+      el.textContent = d.waec_end_date
+        ? `Currently set to ${d.waec_end_date}. Student chat history clears 3 months after this date.`
+        : "Not set yet — chat history is currently expiring on the old 5-months-of-inactivity rule instead.";
+    } catch (e) {
+      if (e.message !== "Unauthorized") el.textContent = "Could not load current setting.";
+    }
+  }
+
+  async function setWaecEndDate() {
+    const input = document.getElementById("waec-end-date-input");
+    const dateVal = input.value;
+    const errEl = document.getElementById("waec-end-date-err");
+    const btn = document.getElementById("waec-end-date-btn");
+    if (!dateVal) { errEl.textContent = "Pick a date first."; return; }
+    errEl.textContent = "";
+    btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      const res = await adminFetch("/admin/waec-end-date", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ waec_end_date: dateVal }),
+      });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.detail || "Could not set date.");
+      toast(`WAEC end date set to ${d.waec_end_date} 📅`);
+      loadWaecEndDate();
+    } catch (e) { errEl.textContent = e.message; }
+    finally { btn.disabled = false; btn.textContent = "📅 Set End Date"; }
+  }
+
+  // ── Topics ────────────────────────────────────────────────────────────
+  async function loadTopics() {
+    try {
+      const res = await adminFetch("/admin/topics");
+      const d = await res.json();
+      allTopics = d.topics;
+      renderTopics();
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load topics", "error"); }
+  }
+
+  function renderTopics() {
+    const filter = (document.getElementById("topic-filter").value || "").trim().toLowerCase();
+    const filtered = filter ? allTopics.filter(t => t.subject.toLowerCase().includes(filter)) : allTopics;
+    const tbody = document.querySelector("#topics-table tbody");
+    tbody.innerHTML = filtered.length ? filtered.map(t => `
+      <tr><td>${esc(t.subject)}</td><td>${esc(t.topic)}</td><td>${fmtDateShort(t.created_at)}</td>
+        <td><button class="icon-btn" title="Delete topic" onclick="deleteAdminTopic(${t.id})">🗑</button></td></tr>`).join("")
+      : '<tr><td colspan="4" class="empty">No topics match.</td></tr>';
+  }
+
+  async function addAdminTopic() {
+    const subject = document.getElementById("topic-subject").value.trim();
+    const topic = document.getElementById("topic-name").value.trim();
+    const errEl = document.getElementById("topic-err");
+    if (!subject || !topic) { errEl.textContent = "Subject and topic are both required."; return; }
+    errEl.textContent = "";
+    try {
+      const res = await adminFetch("/admin/topics", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subject, topic }),
+      });
+      const data = await res.json();
+      if (!res.ok) { errEl.textContent = data.detail || "Could not add topic."; return; }
+      document.getElementById("topic-subject").value = "";
+      document.getElementById("topic-name").value = "";
+      toast(data.warning || "Topic added.");
+      loadedTabs.delete("topics"); loadTopics();
+    } catch { errEl.textContent = "Could not add topic."; }
+  }
+
+  async function syncTopicsFromCurriculum() {
+    const btn = document.getElementById("sync-topics-btn");
+    const resultEl = document.getElementById("sync-result");
+    if (!confirm("This will bulk-add every unique topic already in curriculum.py and generated_curriculum.py. Existing topics are left untouched. Continue?")) return;
+    btn.disabled = true; btn.textContent = "Syncing…";
+    resultEl.textContent = "";
+    try {
+      const res = await adminFetch("/admin/topics/sync-from-curriculum", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Error");
+      resultEl.innerHTML = `<span class="pill pill-green">${data.added} added</span>
+        <span class="hint" style="margin-left:0.5rem;">${data.already_existed} already existed · ${data.total_unique_topics_in_curriculum} total unique topics in curriculum</span>`;
+      toast(data.message);
+      loadedTabs.delete("topics"); loadTopics();
+    } catch (e) {
+      resultEl.innerHTML = `<span style="color:#e74c3c;">Error: ${e.message}</span>`;
+    } finally {
+      btn.disabled = false; btn.textContent = "🔄 Sync Topics from Curriculum";
+    }
+  }
+
+  async function deleteAdminTopic(id) {
+    if (!confirm("Delete this topic?")) return;
+    try {
+      const res = await adminFetch(`/admin/topics/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      toast("Topic deleted.");
+      loadedTabs.delete("topics"); loadTopics();
+    } catch { toast("Could not delete topic.", "error"); }
+  }
+
+  async function loadTopicCoverage() {
+    const btn = document.getElementById("coverage-btn");
+    const summaryEl = document.getElementById("coverage-summary");
+    const tbody = document.querySelector("#coverage-table tbody");
+    btn.disabled = true; btn.textContent = "Checking…";
+    tbody.innerHTML = '<tr><td colspan="5" class="loading">Checking every topic against the curriculum corpus…</td></tr>';
+    try {
+      const res = await adminFetch("/admin/topic-coverage");
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.detail || "Error");
+
+      const s = d.summary;
+      summaryEl.innerHTML = `
+        <span class="pill pill-green">${s.strong} strong</span>
+        <span class="pill pill-gold" style="margin-left:0.4rem;">${s.weak} weak</span>
+        <span class="pill pill-red" style="margin-left:0.4rem;">${s.none} none</span>
+        <span class="hint" style="margin-left:0.6rem;">of ${s.total} topics</span>`;
+
+      const rows = (d.topics || []).slice().sort((a, b) => a.best_match_score - b.best_match_score);
+      tbody.innerHTML = rows.length ? rows.map(t => {
+        const cls = t.coverage === "strong" ? "pill-green" : t.coverage === "weak" ? "pill-gold" : "pill-red";
+        return `<tr><td>${esc(t.subject)}</td><td>${esc(t.topic)}</td>
+          <td><span class="pill ${cls}">${t.coverage}</span></td>
+          <td>${t.best_match_passage_topic ? esc(t.best_match_passage_topic) : "—"}</td>
+          <td>${t.best_match_score}</td></tr>`;
+      }).join("") : '<tr><td colspan="5" class="empty">No topics added yet.</td></tr>';
+    } catch (e) {
+      tbody.innerHTML = `<tr><td colspan="5" class="empty">Error: ${e.message}</td></tr>`;
+    } finally {
+      btn.disabled = false; btn.textContent = "🔍 Check Coverage";
+    }
+  }
+
+  // ── Provider Health ───────────────────────────────────────────────────
+  function renderProviderTable(tableId, providers) {
+    const tbody = document.querySelector(`#${tableId} tbody`);
+    const entries = Object.entries(providers || {});
+    if (!entries.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No provider activity recorded yet.</td></tr>'; return; }
+    entries.sort((a, b) => b[1].total - a[1].total);
+    tbody.innerHTML = entries.map(([name, c]) => {
+      const rate = c.success_rate_pct;
+      const cls = rate == null ? "pill-grey" : rate >= 80 ? "pill-green" : rate >= 40 ? "pill-gold" : "pill-red";
+      return `<tr><td>${esc(name)}</td><td>${c.success}</td><td>${c.empty}</td><td>${c.error}</td><td>${c.total}</td>
+        <td><span class="pill ${cls}">${rate != null ? rate + "%" : "—"}</span></td></tr>`;
+    }).join("");
+  }
+
+  async function loadProviderHealth() {
+    try {
+      const res = await adminFetch("/admin/provider-health");
+      const d = await res.json();
+      if (d.note) toast(d.note, "error");
+      renderProviderTable("provider-24h-table", d.providers_24h);
+      renderProviderTable("provider-7d-table", d.providers_7d);
+      const tbody = document.querySelector("#provider-errors-table tbody");
+      tbody.innerHTML = (d.recent_errors && d.recent_errors.length) ? d.recent_errors.map(e => `
+        <tr><td>${esc(e.provider)}</td><td style="max-width:420px;">${esc(e.detail)}</td><td>${fmtDate(e.created_at)}</td></tr>`).join("")
+        : '<tr><td colspan="3" class="empty">No errors recorded — good sign 🎉</td></tr>';
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load provider health", "error"); }
+  }
+
+  // ── API Costs ──────────────────────────────────────────────────────────
+  async function loadApiCosts() {
+    try {
+      const res = await adminFetch("/admin/api-costs");
+      const d = await res.json();
+      if (d.note) toast(d.note, "error");
+
+      document.getElementById("cost-stats").innerHTML = `
+        <div class="stat-card accent"><div class="label">All-Time Spend</div><div class="value">$${d.total_all_time_usd.toFixed(4)}</div></div>
+        <div class="stat-card"><div class="label">Last 30 Days</div><div class="value">$${d.total_30d_usd.toFixed(4)}</div></div>
+        <div class="stat-card"><div class="label">Last 7 Days</div><div class="value">$${d.total_7d_usd.toFixed(4)}</div></div>
+        <div class="stat-card"><div class="label">Last 24 Hours</div><div class="value">$${d.total_24h_usd.toFixed(4)}</div></div>`;
+
+      const tbody = document.querySelector("#cost-provider-table tbody");
+      const providers = Object.entries(d.by_provider || {});
+      tbody.innerHTML = providers.length ? providers.map(([name, p]) => {
+        const usage = name === "mistral"
+          ? `${p.input_tokens.toLocaleString()} in / ${p.output_tokens.toLocaleString()} out tokens`
+          : `${p.characters.toLocaleString()} characters`;
+        return `<tr><td>${esc(name)}</td><td>${p.calls}</td><td>$${p.cost_usd.toFixed(4)}</td>
+          <td>${usage}</td><td>${p.estimated_calls > 0 ? `<span class="pill pill-gold">${p.estimated_calls}</span>` : "0"}</td></tr>`;
+      }).join("") : '<tr><td colspan="5" class="empty">No API usage recorded yet.</td></tr>';
+
+      const trendData = (d.daily_trend || []).map(t => ({ date: t.date, total: (t.mistral || 0) + (t.elevenlabs || 0) }));
+      simpleBarChart("cost-trend-chart", trendData, "date", "total");
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load API costs", "error"); }
+  }
+
+  // ── Classroom admin ───────────────────────────────────────────────────
+  async function loadClassroomAdmin() {
+    try {
+      const res = await adminFetch("/admin/classroom");
+      const d = await res.json();
+      if (d.note) toast(d.note, "error");
+      document.getElementById("classroom-stats").innerHTML = `
+        <div class="stat-card accent"><div class="label">Total Sessions</div><div class="value">${d.total_sessions}</div></div>
+        <div class="stat-card"><div class="label">Last 7 Days</div><div class="value">${d.sessions_7d}</div></div>
+        <div class="stat-card warn"><div class="label">In Progress</div><div class="value">${d.in_progress}</div></div>
+        <div class="stat-card"><div class="label">Avg Exchanges</div><div class="value">${d.avg_exchanges ?? "—"}</div></div>`;
+
+      const topEl = document.getElementById("classroom-top-subjects");
+      topEl.innerHTML = (d.top_subjects && d.top_subjects.length)
+        ? d.top_subjects.map(s => {
+            const max = d.top_subjects[0].count || 1;
+            return `<div style="margin-bottom:0.5rem;">
+              <div class="row" style="justify-content:space-between;font-size:0.8rem;margin-bottom:0.2rem;">
+                <span>${esc(s.subject)}</span><span style="color:#6b7482;">${s.count}</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:${s.count/max*100}%"></div></div>
+            </div>`;
+          }).join("")
+        : '<div class="empty">No classroom subject data yet.</div>';
+
+      const tbody = document.querySelector("#classroom-sessions-table tbody");
+      tbody.innerHTML = (d.recent_sessions && d.recent_sessions.length) ? d.recent_sessions.map(s => `
+        <tr><td>${esc(s.student)}</td>
+          <td><span class="pill ${s.in_progress ? 'pill-gold' : 'pill-green'}">${s.in_progress ? 'In progress' : 'Ended'}</span></td>
+          <td>${s.exchange_count}</td><td>${esc((s.subjects||[]).join(", ")) || "—"}</td>
+          <td>${fmtDate(s.started_at)}</td></tr>`).join("")
+        : '<tr><td colspan="5" class="empty">No classroom sessions yet.</td></tr>';
+    } catch (e) { if (e.message !== "Unauthorized") toast("Could not load classroom stats", "error"); }
+  }
+
+  // ── Redemption codes ──────────────────────────────────────────────────
+  let lastGeneratedCodes = [];
+
+  async function generateCodes() {
+    const plan = document.getElementById("code-plan").value;
+    const count = parseInt(document.getElementById("code-count").value, 10);
+    const validity_days = parseInt(document.getElementById("code-validity").value, 10);
+    const note = document.getElementById("code-note").value.trim();
+    const errEl = document.getElementById("code-gen-err");
+    const btn = document.getElementById("gen-codes-btn");
+    errEl.textContent = "";
+
+    if (!count || count < 1 || count > 500) { errEl.textContent = "Count must be between 1 and 500."; return; }
+    if (!validity_days || validity_days < 1) { errEl.textContent = "Validity (days) must be a positive number."; return; }
+
+    btn.disabled = true; btn.textContent = "Generating…";
+    try {
+      const res = await adminFetch("/billing/admin/generate-codes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan, count, note, validity_days }),
+      });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.detail || "Could not generate codes.");
+
+      lastGeneratedCodes = d.codes;
+      document.getElementById("codes-result-list").innerHTML = d.codes.map(c => esc(c)).join("<br>");
+      document.getElementById("codes-result-meta").textContent =
+        `${d.count} code(s) · plan: ${d.plan} · expires ${fmtDateShort(d.expires_at)}`;
+      document.getElementById("codes-result").style.display = "block";
+      document.getElementById("codes-result").scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+      toast(`${d.count} code(s) generated 🎉`);
+      loadedTabs.delete("codes"); // force the history table below to refetch and include the new batch
+      loadCodes();
+    } catch (e) {
+      if (e.message !== "Unauthorized") errEl.textContent = e.message;
+    } finally {
+      btn.disabled = false; btn.textContent = "🎟️ Generate Codes";
+    }
+  }
+
+  function copyGeneratedCodes() {
+    if (!lastGeneratedCodes.length) return;
+    navigator.clipboard.writeText(lastGeneratedCodes.join("\n"))
+      .then(() => toast("Codes copied to clipboard 📋"))
+      .catch(() => toast("Could not copy — select and copy manually.", "error"));
+  }
+
+  async function loadCodes() {
+    const tbody = document.querySelector("#codes-table tbody");
+    try {
+      const res = await adminFetch("/billing/admin/codes");
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.detail || "Error");
+
+      document.getElementById("codes-count").textContent = `${d.codes.length} total`;
+      tbody.innerHTML = d.codes.length ? d.codes.map(c => {
+        const used = !!c.used_by_user_id;
+        return `<tr>
+          <td>${esc(c.plan)}</td>
+          <td>${esc(c.batch_note) || "—"}</td>
+          <td>${esc(c.issued_by_role)}</td>
+          <td><span class="pill ${used ? 'pill-grey' : 'pill-green'}">${used ? 'Used' : 'Unused'}</span></td>
+          <td>${used ? fmtDate(c.used_at) : "—"}</td>
+          <td>${fmtDate(c.created_at)}</td>
+          <td>${fmtDate(c.expires_at)}</td>
+        </tr>`;
+      }).join("") : '<tr><td colspan="7" class="empty">No codes generated yet.</td></tr>';
+    } catch (e) {
+      if (e.message !== "Unauthorized") tbody.innerHTML = `<tr><td colspan="7" class="empty">Error: ${e.message}</td></tr>`;
+    }
+  }
+</script>
+</body>
+</html>

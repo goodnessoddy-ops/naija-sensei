@@ -1,0 +1,16 @@
+.env
+.env.local
+.env.example
+*.db
+naija_sensei.db
+uploads/
+static/node_modules
+__pycache__/
+*.pyc
+.git/
+.gitignore
+locustfile.py
+migrate_sqlite_to_postgres.py
+DEPLOY.md
+LOCAL_DEPLOYMENT.md
+README.md

@@ -1,0 +1,288 @@
+WAEC Chemistry Syllabus 2026/2027 & Texbooks
+ By WAEC2026  October 26, 2025  Blog, WAEC Syllabus 2026  0 Comments
+The WAEC Chemistry Syllabus 2026/2027: covers three main areas: general chemistry principles, chemical processes and reactions, and specific topics like organic chemistry, inorganic chemistry, and physical chemistry. Key topics include atomic structure, the periodic table, chemical bonding, stoichiometry, and rates of reaction. Candidates should also prepare for a practical paper that assesses laboratory skills.
+
+Examination Guides
+The examination will consist of three compulsory papers — Papers 1, 2, and 3. Papers 1 and 2 will be taken together in one sitting, while Paper 3 will be conducted separately.
+
+Paper 1 will comprise fifty multiple-choice objective questions based on Section A of the syllabus, which is common to all candidates. The paper will last for one hour and will carry a total of 50 marks. Candidates are required to answer all questions within the allotted time.
+
+Paper 2 will be a two-hour essay paper covering the entire syllabus and will carry 100 marks. It will be divided into two sections, Section A and Section B. Section A will contain ten short structured questions drawn from the common portion of the syllabus (Section A), all of which must be answered for a total of 25 marks. Section B will consist of four essay questions — two from the common portion (Section A) and two from the section of the syllabus specific to the candidate’s country (either Section B or Section C). Candidates will be required to answer any three of these questions, each worth 25 marks.
+
+Paper 3 will be a practical test lasting two hours for school candidates, or an alternative practical work test lasting one hour and thirty minutes for private candidates. This paper will carry 50 marks and will contain three compulsory questions. The questions will assess candidates’ abilities in three areas: one on quantitative analysis, one on qualitative analysis, and one designed to test familiarity with the practical activities recommended in the teaching syllabus.
+
+WAEC Chemistry Syllabus 2026/2027
+WAEC CHEMISTRY SYLLABUS
+TOPICS	OBJECTIVES
+INTRODUCTION TO CHEMISTRY	i. Measurement of physical quantities.
+
+ii. Scientific measurements and their importance in chemistry.
+
+iii. Scientific Methods
+STRUCTURE OF AN ATOM	i. Gross features of the atom
+
+ii. Atomic number/proton number, number of neutrons, isotopes, atomic mass, mass number
+
+iii. Relative atomic mass (Ar) and relative molecular mass (Mr) based on the Carbon-12 scale
+
+iv. Characteristics and nature of matter.
+
+v. Particulate nature of matter: physical and chemical changes
+
+vi. Electron Configuration
+
+vii. Orbitals
+
+viii. Rules and principles for filling in electrons
+STANDARD SEPARATION TECHNIQUES FOR MIXTURES	i. Classification of mixtures.
+
+ii. Separation techniques
+
+iii. Criteria for purity
+PERIODIC CHEMISTRY	i. Periodicity of the elements.
+
+ii. Different categories of elements in the periodic table.
+
+iii. Periodic law
+a) Trends on the periodic table
+b) Periodic gradation of the elements in the third period (Na – Ar)
+c) Reactions between acids and metals, their oxides and trioxocarbonates (IV)
+d) Periodic gradation of elements in group seven, the halogens: F, Cl, Br and I
+e) Elements of the first transition series 21Sc – 30Zn
+CHEMICAL BONDS	i. Interatomic bonding
+
+ii. Formation of ionic bonds and compounds.
+
+iii. Properties of ionic compounds.
+
+iv. The naming of ionic compounds.
+
+v. Formation of covalent bonds and compounds.
+
+vi. Properties of covalent compounds.
+
+vii. Coordinate (dative) covalent bonding
+
+viii. Shapes of molecular compounds.
+
+ix. Metallic Bonding
+
+x. Factors influencing its formation.
+
+xi. Properties of metals.
+
+xii. Intermolecular bonding
+
+xiii. Intermolecular forces in covalent compounds
+
+xiv. Hydrogen bonding
+
+xv. van der Waals forces
+
+xvi. Comparison of all bond types
+STOICHEMISTRY & CHEMICAL REACTIONS	i. Symbols, formulae and equations.
+
+ii. Chemical symbols.
+
+iii. Empirical and molecular formulae
+
+iv. Chemical equations and IUPAC names of chemical compounds
+
+v. Laws of chemical combination
+
+vi. Amount of substance
+
+vii. Mole ratios
+
+viii. Solutions
+
+ix. Concentration terms
+
+x. Standard solutions.
+
+xi. Preparation of solutions from liquid solutes by the method of dilution
+STATES OF MATTER	i. Kinetic theory of matter.
+
+ii. Changes of state of matter.
+
+iii. Diffusion
+
+iv. Gases
+a) Characteristics and nature of gases
+b) The gas laws
+c) Laboratory preparation and properties of some gases.
+
+v. Liquids
+
+vi. Vapour and gases.
+
+vii. Solids
+a) Characteristics and nature
+b) Types and structures
+c) Properties of solids.
+
+viii. Structures, properties and uses of diamond and graphite.
+
+ix. Determination of melting points of covalent solids.
+ENERGY & ENERGY CHANGES	i. Energy and enthalpy
+
+ii. Description, definition and illustrations of energy changes and their effects
+ACIDS, BASES & SALTS	i. Definitions of acids and bases.
+
+ii. Physical and chemical properties of acids and bases.
+
+iii. Acids, bases and salts as electrolytes.
+
+iv. Classification of acids and bases.
+
+v. Concept of pH
+
+vi. Salts
+a) Laboratory and industrial preparation of salts
+b) Uses
+c) Hydrolysis of salt.
+
+vii. Deliquescent, efflorescent and hygroscopic compound.
+
+viii. Acid-Base indicators
+
+ix. Acid-Base titration
+SOLUBILITY OF SUBSTANCES	i. General principles
+
+ii. Practical application of solubility
+CHEMICAL KINETICS & EQUILIBRIUM RATE	i. Rate of reactions:
+a) Factors affecting rates
+b) Theories of reaction rates
+c) Analysis and interpretation of graphs
+
+ii. Equilibrium:
+a) General Principle
+b) Le Chatelier’s principle
+REDOX REACTIONS	i. Oxidation and reduction process.
+
+ii. Oxidizing and reducing agents.
+
+iii. Redox equations
+
+iv. Electrochemical cells
+a) Standard electrode potential
+b) Drawing of cell diagram and writing cell notation
+c) E.M.F. of cells;
+d) Application of Electrochemical cells.
+
+v. Electrolysis
+a) Electrolytic cells
+b) Principles of electrolysis
+c) Factors influencing discharge of species;
+d) Faraday’s laws
+e) Practical application
+f) Corrosion of metals
+CHEMISTRY OF CARBON COMPOUNDS	i. Classification
+
+ii. Functional group
+
+iii. Separation and purification of organic compounds.
+
+iv. Petroleum/crude oil
+
+v. Determination of empirical and molecular formulae and molecular structures of organic compounds.
+
+vi. General properties of organic compounds:
+a) Homologous series
+b) Isomerism.
+
+vii. Alkanes
+a) Sources, properties
+b) Uses.
+
+viii. Alkenes
+a) Sources and properties
+b) Uses
+c) Laboratory detection.
+
+ix. Alkynes
+a) Sources, characteristic properties and uses
+b) Chemical reactions.
+
+x. Benzene
+a) Structure and physical properties;
+b) Chemical properties
+
+xi. Alkanols
+a) Sources, nomenclature and structure;
+b) Classification
+c) Physical properties
+d) Chemical properties
+e) Laboratory test
+f) Uses.
+
+xii. Alkanoic acids
+a) Sources, nomenclature and structure;
+b) Physical properties
+c) Chemical properties
+d) Laboratory test
+e) Uses
+
+xiii. Alkanoates as derivatives of alkanoic acids:
+a) Sources, nomenclature, preparation and structure;
+b) Physical properties
+c) Chemical properties
+d) Uses
+CHEMISTRY, INDUSTRY & THE ENVIRONMENT	i. Chemical industry
+
+ii. Pollution: air, water and soil pollution
+
+iii. Biotechnology
+BASIC BIOCHEMISTRY & SYNTHETIC POLYMERS	i. Proteins:
+a) Sources and properties
+b) Uses of protein
+
+ii. Amino acids
+
+iii. Fats/oils
+a) Sources and properties;
+b) The general structure of fats/oils
+c) Preparation of soap
+d) Uses of fats/oils.
+
+iv. Carbohydrates
+a) Sources and nomenclature;
+b) Properties
+c) Carbohydrates as examples of polymers;
+d) Uses
+
+v. Synthetic polymers:
+a) Properties;
+b) Uses of polymers
+WAEC CHEMISTRY PRACTICALS
+GENERAL SKILLS & PRINCIPLES	Candidates will be expected to be familiar with the following skills and principles:
+
+i. Measurement of mass and volume;
+ii. Preparation and dilution of standard solutions;
+iii. Filtration, recrystallisation and melting point determination;
+iv. Measurement of heats of neutralization and solutions;
+v. Determination of pH value of various solutions by colorimetry;
+vi. Determination of rates of reaction from concentration versus time curves;
+vii. Determination of equilibrium constants for a simple system.
+QUANTITATIVE ANALYSIS	1. Acid-Base Titrations
+The use of standard solutions of acids and alkalis and the indicators; methyl orange, methyl red and phenolphthalein to determine the following:
+
+i. The concentrations of acid and alkaline solutions;
+ii. The molar masses of acids and bases and water of crystallization.
+iii. The solubility of acids and bases;
+iv. The percentage purity of acids and bases;
+v. Analysis of Na2CO3/NaHCO3 mixture by double indicator methods (Ghanaians only).
+vi. Stoichiometry of reactions.
+
+2. Redox Titrations
+Titrations of the following systems to solve analytical problems:
+Acidic MnO4– with Fe2+;
+Acidic MnO4– with C2O42-;
+I2 in KI versus S2O32-.
+QUALITATIVE ANALYSIS	No formal scheme of analysis is required.i. Characteristic tests of the following cations with dilute NaOH(aq) and NH3(aq); NH4; Ca2+; Pb2+; Cu2+; Fe2+; Fe3+; Al3+; and Zn2+.
+ii. Confirmatory tests for the above cations.
+iii. The characteristic reaction of dilute HCl on solids or aqueous solutions and conc. H2SO4 on solid samples of the following: Cl– ; SO32- ; CO32- ; NO3– and SO42-.
+iv. Confirmatory tests for the above anions
+v. Comparative study of the halogens; displacement reactions.
+vi. Characteristic tests for the following gases: H2; NH3; CO2; HCl and SO2.
+vii. Characteristic test tube reactions of the functional groups in the following simple organic compounds: Alkenes; alkanols; alkanoic acids, sugars (using Fehling’s and Benedict’s solutions only); starch (iodine test only) and proteins (using the Ninhydrin test, Xanthoporteic test, Biuret test and Millon’s test only).

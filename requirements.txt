@@ -1,0 +1,80 @@
+# NaijaSensei dependencies
+# Install with: pip install -r requirements.txt
+
+# Web server
+fastapi==0.115.0
+uvicorn==0.32.0
+python-multipart==0.0.12
+
+# Environment variables
+python-dotenv==1.0.1
+
+# Cloud Gemma 4 26B via Google AI Studio
+google-genai==0.3.0
+
+# Local Gemma 3n E2B via Ollama
+ollama==0.4.0
+
+# RAG: vector database
+chromadb==0.5.20
+
+# RAG: embeddings model
+sentence-transformers==3.3.0
+
+# Pydantic for request validation
+pydantic==2.10.0
+
+# JWT signing/verification for login sessions (auth.py: `from jose import jwt`).
+# Was previously missing from this file entirely — only mentioned in a
+# comment below, never actually pinned, which meant a fresh install had no
+# guarantee of getting a working version at all.
+python-jose[cryptography]==3.3.0
+
+# Password hashing (auth.py: `from passlib.context import CryptContext`).
+# Also previously missing from this file. IMPORTANT: bcrypt is pinned
+# below 4.1 deliberately — passlib 1.7.4 (the latest passlib release) is
+# incompatible with bcrypt>=4.1 (bcrypt removed the `__about__.__version__`
+# attribute passlib's version-detection relies on, and passlib's own
+# internal "wrap bug" self-test then raises `ValueError: password cannot
+# be longer than 72 bytes` on every single hash call — this fails
+# registration and login outright, not just a warning). Confirmed by
+# actually hitting this exact failure while testing billing.py against a
+# fresh install in this session. Don't bump bcrypt past 4.0.x without
+# also confirming passlib has caught up.
+passlib==1.7.4
+bcrypt==4.0.1
+
+# Encrypting stored teacher/parent-created student credentials at rest
+# (dashboard.py). Already pulled in transitively by python-jose[cryptography]
+# per auth.py's setup notes, but pinned explicitly here since dashboard.py
+# now imports it directly.
+cryptography==43.0.3
+
+# PostgreSQL driver for db.py — replaces the old single-file SQLite database.
+# SQLite serializes all writes through one file lock and can't be shared
+# across multiple app server replicas; see db.py's module docstring for the
+# full rationale. Requires a running PostgreSQL server — set DATABASE_URL
+# in your .env (see .env.example). psycopg2-binary bundles libpq so there's
+# no separate system package to install; switch to the non-binary psycopg2
+# build for production if you want to link against your own libpq.
+psycopg2-binary==2.9.10
+
+# Optional — used by security.py to share rate-limiting and login-lockout
+# state across multiple app replicas via REDIS_URL. Without REDIS_URL set
+# (or without this package installed), security.py falls back to
+# per-process in-memory state automatically — this is a soft dependency,
+# not a hard one. See security.py's module docstring.
+redis==5.2.1
+
+# File upload handling (uploads.py). aiofiles is a hard dependency (used
+# unconditionally for saving uploaded files); pdfminer.six and python-docx
+# are used for PDF/Word text extraction but uploads.py already degrades
+# gracefully (returns an explanatory string instead of crashing) if either
+# is missing — still worth installing so those upload types actually work.
+# Previously entirely missing from this file despite being genuinely used,
+# alongside a dead `pytesseract` import in uploads.py that was never
+# actually used for OCR anywhere and would have blocked the whole app from
+# starting if it wasn't installed — removed rather than added here.
+aiofiles==24.1.0
+pdfminer.six==20240706
+python-docx==1.1.2
