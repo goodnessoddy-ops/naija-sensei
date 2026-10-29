@@ -794,12 +794,12 @@
   #more-menu-wrap { position: relative; flex-shrink: 0; }
   #more-menu-btn { display: inline-flex; }
   #more-menu-panel {
-    display: none; position: absolute; top: 115%; right: 0;
+    display: none; position: fixed; top: 4.5rem; right: 0.75rem; left: auto;
     background: var(--surface); border: 1px solid var(--line);
     border-radius: var(--radius-md); box-shadow: var(--shadow-lift);
-    padding: 0.4rem; z-index: 60; min-width: 190px;
-    max-width: calc(100vw - 2rem); max-height: min(70vh, 420px);
-    overflow-y: auto;
+    padding: 0.4rem; z-index: 1000; min-width: 190px;
+    max-width: calc(100vw - 1.5rem); max-height: min(70vh, 420px);
+    overflow-y: auto; overflow-x: hidden;
     flex-direction: column; gap: 0.15rem;
   }
   #more-menu-panel.open { display: flex; }
@@ -810,9 +810,6 @@
   }
   #more-menu-panel .nav-btn:hover { background: var(--forest-pale); transform: none; }
 
-  @media (max-width: 420px) {
-    #more-menu-panel { right: -0.6rem; }
-  }
 
   @media (max-width: 900px) {
     .chat-header-right .nav-btn { padding: 0.35rem 0.6rem 0.35rem 0.35rem; }
@@ -1103,6 +1100,74 @@
   html[data-theme="dark"] .locked-free::after { color: var(--gold-deep); }
 
   </style>
+<style id="classroom-mobile-css">
+/* ── AI Classroom: clean phone layout ─────────────────────────────────────
+   Phones in portrait: Mr. Sensei fills the stage, the student's camera is a
+   small picture-in-picture tile (like a video call), the "tap the mic" hint
+   gets its own full-width row, and the buttons share the next row evenly.
+   Wider screens and landscape keep the original two-tile layout. */
+@media (max-width: 640px) {
+  #classroom-screen .cl-topbar {
+    padding: max(0.55rem, env(safe-area-inset-top)) 0.8rem 0.55rem !important;
+    gap: 0.5rem;
+  }
+  #classroom-screen .cl-topbar > div { min-width: 0; }
+  #classroom-screen .cl-title {
+    font-size: 0.85rem !important; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; min-width: 0;
+  }
+  #classroom-screen #cl-status { font-size: 0.7rem !important; }
+  #classroom-screen .cl-topbar button { padding: 0.35rem 0.8rem !important; flex-shrink: 0; }
+
+  #classroom-screen #cl-voice-note { font-size: 0.68rem !important; padding: 0.3rem 0.8rem !important; line-height: 1.35; }
+  #classroom-screen #cl-topic-bar { padding: 0.35rem 0.8rem !important; font-size: 0.72rem !important; }
+  #classroom-screen #cl-topic-text {
+    flex: 1; min-width: 0;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; line-clamp: 1; overflow: hidden;
+  }
+
+  #classroom-screen .cl-grid {
+    position: relative; grid-template-columns: 1fr !important;
+    grid-template-rows: minmax(0, 1fr); padding: 0.5rem 0.6rem !important;
+  }
+  #classroom-screen .cl-tile-me {
+    position: absolute !important; right: 1.1rem; bottom: 1.1rem; z-index: 3;
+    width: 28%; max-width: 118px; aspect-ratio: 3 / 4;
+    border: 2px solid rgba(255,255,255,0.22); border-radius: 12px !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  }
+  #classroom-screen .cl-tile-me video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+  }
+  #classroom-screen .cl-tile-me > div:not([id]) {
+    font-size: 0.6rem !important; padding: 0.08rem 0.35rem !important;
+    left: 0.3rem !important; bottom: 0.3rem !important;
+  }
+  #classroom-screen .cl-tile-me #cam-placeholder { font-size: 0.6rem !important; gap: 0.15rem !important; }
+  #classroom-screen .cl-tile-me #cam-placeholder > div:first-child { font-size: 1.3rem !important; }
+  #classroom-screen .cl-tile-me #engagement-warning { font-size: 0.58rem !important; padding: 0.3rem !important; }
+  #classroom-screen .cl-tile-me #attention-dot { top: 0.35rem !important; right: 0.35rem !important; width: 8px !important; height: 8px !important; }
+
+  #classroom-screen .cl-bottom {
+    padding: 0 0.6rem max(0.6rem, env(safe-area-inset-bottom)) !important;
+  }
+  #classroom-screen #classroom-transcript {
+    height: auto !important; min-height: 64px; max-height: 17vh;
+    font-size: 0.8rem !important; padding: 0.5rem 0.75rem !important; margin-bottom: 0.5rem !important;
+  }
+  #classroom-screen .cl-controls { gap: 0.4rem !important; }
+  #classroom-screen #classroom-input-display {
+    flex: 1 0 100% !important; text-align: center; font-size: 0.82rem !important;
+    padding: 0.5rem 0.75rem !important; max-height: 2.9em; overflow: hidden;
+  }
+  #classroom-screen .cl-controls button {
+    flex: 1 1 0; min-width: 0; min-height: 44px;
+    padding: 0.4rem 0.2rem !important; font-size: 1.05rem !important;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  #classroom-screen #cl-show-btn { flex: 1.9 1 0 !important; font-size: 0.8rem !important; white-space: nowrap; }
+}
+</style>
 </head>
 <body>
 
@@ -1231,7 +1296,7 @@
       <button class="nav-btn" id="premium-btn" onclick="showPremium()"><span class="nav-icon" style="background:var(--gold-deep)"><i data-lucide="crown"></i></span><span class="nav-label">Premium</span></button>
 
       <div id="more-menu-wrap" data-student-only>
-        <button class="nav-btn" id="more-menu-btn" onclick="document.getElementById('more-menu-panel').classList.toggle('open')"><span class="nav-icon" style="background:var(--forest)"><i data-lucide="menu"></i></span><span class="nav-label">More</span></button>
+        <button class="nav-btn" id="more-menu-btn" onclick="toggleMoreMenu(event)"><span class="nav-icon" style="background:var(--forest)"><i data-lucide="menu"></i></span><span class="nav-label">More</span></button>
         <div id="more-menu-panel">
           <button class="nav-btn" onclick="showPastQuestions();document.getElementById('more-menu-panel').classList.remove('open')"><span class="nav-icon" style="background:#27ae60"><i data-lucide="folder-open"></i></span> Past Questions</button>
           <button class="nav-btn" onclick="showHistory();document.getElementById('more-menu-panel').classList.remove('open')"><span class="nav-icon" style="background:#2980b9"><i data-lucide="bar-chart-3"></i></span> Scores</button>
@@ -1528,10 +1593,10 @@
 <div id="classroom-screen" class="screen">
 
   <!-- Top bar -->
-  <div style="flex-shrink:0;background:#0f1923;padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;">
+  <div class="cl-topbar" style="flex-shrink:0;background:#0f1923;padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;">
     <div style="display:flex;align-items:center;gap:0.6rem;">
       <div id="cl-rec-dot" style="width:10px;height:10px;border-radius:50%;background:#e74c3c;animation:pulse 1.5s infinite;"></div>
-      <span style="color:white;font-weight:600;font-size:0.9rem;">🎓 AI Classroom — Mr. Sensei</span>
+      <span class="cl-title" style="color:white;font-weight:600;font-size:0.9rem;">🎓 AI Classroom — Mr. Sensei</span>
     </div>
     <div style="display:flex;gap:0.5rem;align-items:center;">
       <span id="cl-status" style="font-size:0.75rem;color:#aaa;">Connecting...</span>
@@ -1547,10 +1612,10 @@
   </div>
 
   <!-- Video grid -->
-  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;padding:0.75rem;background:#0f1923;min-height:0;">
+  <div class="cl-grid" style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;padding:0.75rem;background:#0f1923;min-height:0;">
 
     <!-- Mr. Sensei avatar panel -->
-    <div style="position:relative;border-radius:16px;overflow:hidden;background:#1a2535;display:flex;align-items:center;justify-content:center;">
+    <div class="cl-tile cl-tile-bot" style="position:relative;border-radius:16px;overflow:hidden;background:#1a2535;display:flex;align-items:center;justify-content:center;">
       <!-- Avatar base image -->
   <!-- Avatar base image - wrapped and shifted to hide the artifact band -->
  <div style="position:absolute;inset:0;overflow:hidden;border-radius:16px;">
@@ -1585,7 +1650,7 @@
     </div>
 
     <!-- Student webcam panel -->
-    <div style="position:relative;border-radius:16px;overflow:hidden;background:#1a2535;">
+    <div class="cl-tile cl-tile-me" style="position:relative;border-radius:16px;overflow:hidden;background:#1a2535;">
       <video id="student-video" autoplay muted playsinline
              style="width:100%;height:100%;object-fit:cover;transform:scaleX(-1);"></video>
 
@@ -1625,7 +1690,7 @@
   </div>
 
   <!-- Transcript + controls -->
-  <div style="flex-shrink:0;background:#0f1923;padding:0 0.75rem 0.75rem;">
+  <div class="cl-bottom" style="flex-shrink:0;background:#0f1923;padding:0 0.75rem 0.75rem;">
 
     <!-- Transcript -->
     <div id="classroom-transcript" style="
@@ -1636,7 +1701,7 @@
     "></div>
 
     <!-- Controls bar -->
-    <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+    <div class="cl-controls" style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
       <div id="classroom-input-display" style="flex:1;padding:0.6rem 0.9rem;border-radius:8px;border:1px solid #2a3a4a;background:#1a2535;color:#888;font-size:0.9rem;min-width:0;">🎤 Tap the mic to speak to Mr. Sensei</div>
       <input id="classroom-input" type="hidden" />
       <button id="cl-mic-btn" onclick="toggleClassroomMic()" style="background:#2a3a4a;color:white;border:none;border-radius:8px;padding:0.6rem 0.9rem;font-size:1rem;cursor:pointer;" title="Voice input">🎤</button>
@@ -2202,6 +2267,35 @@
     }
   })();
 
+  // Header "More" menu: opens as a fixed panel placed under the button and
+  // clamped to the screen edges, so it can never be cut off on small phones.
+  // (body has "perspective", which makes it the containing block for fixed
+  // children, so we measure the panel's own origin instead of assuming 0,0.)
+  function positionMoreMenu() {
+    const panel = document.getElementById("more-menu-panel");
+    const btn = document.getElementById("more-menu-btn");
+    if (!panel || !btn || !panel.classList.contains("open")) return;
+    panel.style.left = "0px"; panel.style.top = "0px"; panel.style.right = "auto";
+    const origin = panel.getBoundingClientRect();
+    const b = btn.getBoundingClientRect();
+    const vw = document.documentElement.clientWidth;
+    const margin = 12;
+    const w = panel.offsetWidth;
+    let left = b.right - w;
+    left = Math.max(margin, Math.min(left, vw - margin - w));
+    panel.style.left = (left - origin.left) + "px";
+    panel.style.top = (b.bottom + 6 - origin.top) + "px";
+  }
+  function toggleMoreMenu(ev) {
+    if (ev) ev.stopPropagation();
+    const panel = document.getElementById("more-menu-panel");
+    if (!panel) return;
+    panel.classList.toggle("open");
+    positionMoreMenu();
+  }
+  window.addEventListener("resize", positionMoreMenu);
+  window.addEventListener("orientationchange", () => setTimeout(positionMoreMenu, 250));
+
   // Close the header "More" menu and toolbar "Options" panel on outside click
   document.addEventListener("click", (e) => {
     const moreWrap = document.getElementById("more-menu-wrap");
@@ -2277,6 +2371,7 @@
         // has no way to know the student's actual subjects and was
         // observed hallucinating a generic, wrong subject list when
         // asked "what subjects am I doing" while offline.
+        setTimeout(() => prefetchTopicsForSubjects(data.subjects), 1500);
         try {
           localStorage.setItem("ns_cached_profile", JSON.stringify({
             subjects: data.subjects,
@@ -2357,7 +2452,7 @@
     _net.online = on;
     try { _reachableCache.t = 0; updateOfflineBanner(); } catch (e) {}
     try { if (document.getElementById("exam-screen")?.classList.contains("active")) renderOfflineExamPanel(); } catch (e) {}
-    if (on) { setTimeout(autoSyncOfflineExams, 1500); setTimeout(resumeActiveJob, 800); loadPlanStatus(); }
+    if (on) { setTimeout(autoSyncOfflineExams, 1500); setTimeout(resumeActiveJob, 800); loadPlanStatus(); setTimeout(() => { try { prefetchTopicsForSubjects(myExamSubjects); } catch (e) {} }, 2500); }
     else { warmOfflineEngineIfNeeded(); }
   }
   function noteNetFailure() { _net.fails++; if (_net.fails >= 2 || !navigator.onLine) setNetState(false); }
@@ -3000,55 +3095,112 @@ let heartbeatInterval = null;
     } catch(e) { if(e.message!=="401") console.warn("Subject history load:", e); }
   }
 
+  // ── Topic lists: saved on the device so they open with no internet ─────────
+  function _readCachedTopics(subject) {
+    try {
+      const v = JSON.parse(localStorage.getItem("ns_topics:" + subject) || "null");
+      return Array.isArray(v) ? v : null;
+    } catch (e) { return null; }
+  }
+  function _saveCachedTopics(subject, topics) {
+    try {
+      localStorage.setItem("ns_topics:" + subject, JSON.stringify(topics));
+      localStorage.setItem("ns_topics_ts:" + subject, String(Date.now()));
+    } catch (e) {}
+  }
+  async function _fetchTopics(subject) {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 8000);
+    try {
+      const res = await apiFetch(`${API}/profile/topics?subject=${encodeURIComponent(subject)}`,
+        { headers: { "Authorization": `Bearer ${token}` }, signal: ctl.signal });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Could not load topics");
+      return Array.isArray(data.topics) ? data.topics : [];
+    } finally { clearTimeout(timer); }
+  }
+  // While online, quietly save the topic list of EVERY subject the student offers,
+  // so each one is available offline even if its list was never opened before.
+  async function prefetchTopicsForSubjects(subjects) {
+    if (!token || !isOnline()) return;
+    for (const subject of (subjects || [])) {
+      let ts = 0;
+      try { ts = Number(localStorage.getItem("ns_topics_ts:" + subject) || 0); } catch (e) {}
+      if (_readCachedTopics(subject) && Date.now() - ts < 6 * 3600 * 1000) continue;
+      try { _saveCachedTopics(subject, await _fetchTopics(subject)); }
+      catch (e) { if (e && e.message === "401") return; break; }
+    }
+  }
+
+  function renderTopicList(body, subject, topics) {
+    if (!topics.length) {
+      body.innerHTML = `<div style="color:#999;font-size:0.85rem;">No topics added for ${subject} yet.</div>`;
+      return;
+    }
+    body.innerHTML = "";
+    topics.forEach(t => {
+      const row = document.createElement("div");
+      row.style.cssText = "display:flex;align-items:stretch;gap:0.4rem;margin-bottom:0.5rem;";
+
+      const pill = document.createElement("button");
+      pill.textContent = t;
+      pill.className = "topic-pill";
+      pill.style.cssText = "flex:1;text-align:left;background:#f2f6f4;border:1px solid #e0e0e0;border-radius:8px;padding:0.55rem 0.7rem;font-size:0.85rem;cursor:pointer;";
+      // Tapping the topic itself switches straight into that topic's own
+      // chat thread. The stats icon next to it is for the mastery view.
+      pill.onclick = () => focusChatOnTopic(document.getElementById("topics-drawer-subject").textContent, t);
+
+      const statsBtn = document.createElement("button");
+      statsBtn.textContent = "📊";
+      statsBtn.title = "View mastery & curriculum for this topic";
+      statsBtn.style.cssText = "flex-shrink:0;background:#f2f6f4;border:1px solid #e0e0e0;border-radius:8px;padding:0.55rem 0.6rem;font-size:0.85rem;cursor:pointer;";
+      statsBtn.onclick = () => openTopicMastery(document.getElementById("topics-drawer-subject").textContent, t);
+
+      row.appendChild(pill);
+      row.appendChild(statsBtn);
+      body.appendChild(row);
+    });
+  }
+
+  function showTopicsError(body, subject, offline) {
+    body.innerHTML = "";
+    const msg = document.createElement("div");
+    msg.style.cssText = "color:#c0392b;font-size:0.85rem;line-height:1.5;";
+    msg.textContent = offline
+      ? `📶 You're offline, and the topics for ${subject} haven't been saved on this phone yet. Connect to the internet once and open this list again. After that it will open offline.`
+      : "Could not load topics. Check your connection and try again.";
+    body.appendChild(msg);
+    if (!offline) {
+      const retry = document.createElement("button");
+      retry.textContent = "Try again";
+      retry.style.cssText = "margin-top:0.6rem;background:#2980b9;color:white;border:none;border-radius:8px;padding:0.45rem 0.9rem;font-size:0.82rem;cursor:pointer;";
+      retry.onclick = () => loadTopicsForSubject(subject);
+      body.appendChild(retry);
+    }
+  }
+
   async function loadTopicsForSubject(subject) {
     const body = document.getElementById("topics-drawer-body");
     document.getElementById("topics-drawer-subject").textContent = subject;
-    body.innerHTML = `<div style="color:#999;font-size:0.85rem;">Loading topics...</div>`;
+    const stillCurrent = () => document.getElementById("topics-drawer-subject").textContent === subject;
+
+    // Show the saved list straight away (instant, and the only thing that works offline).
+    const cached = _readCachedTopics(subject);
+    if (cached) renderTopicList(body, subject, cached);
+    else body.innerHTML = `<div style="color:#999;font-size:0.85rem;">Loading topics...</div>`;
+
+    if (!isOnline()) {
+      if (!cached) showTopicsError(body, subject, true);
+      return;
+    }
     try {
-      let topics;
-      try {
-        const res = await apiFetch(`${API}/profile/topics?subject=${encodeURIComponent(subject)}`, { headers:{"Authorization":`Bearer ${token}`} });
-        const data = await res.json();
-        topics = data.topics || [];
-        try { localStorage.setItem("ns_topics:" + subject, JSON.stringify(topics)); } catch (e) {}
-      } catch (netErr) {
-        if (netErr && netErr.message === "401") throw netErr;
-        let cachedTopics = null;
-        try { cachedTopics = JSON.parse(localStorage.getItem("ns_topics:" + subject) || "null"); } catch (e) {}
-        if (!cachedTopics) throw netErr;     // never loaded before: nothing to show
-        topics = cachedTopics;               // offline: use the list saved last time
-      }
-      if (!topics.length) {
-        body.innerHTML = `<div style="color:#999;font-size:0.85rem;">No topics added for ${subject} yet.</div>`;
-        return;
-      }
-      body.innerHTML = "";
-      topics.forEach(t => {
-        const row = document.createElement("div");
-        row.style.cssText = "display:flex;align-items:stretch;gap:0.4rem;margin-bottom:0.5rem;";
-
-        const pill = document.createElement("button");
-        pill.textContent = t;
-        pill.className = "topic-pill";
-        pill.style.cssText = "flex:1;text-align:left;background:#f2f6f4;border:1px solid #e0e0e0;border-radius:8px;padding:0.55rem 0.7rem;font-size:0.85rem;cursor:pointer;";
-        // Tapping the topic itself switches straight into that topic's own
-        // chat thread — this is what "switching topics" should do. The
-        // separate stats icon next to it (below) is for students who
-        // specifically want the mastery/curriculum view instead.
-        pill.onclick = () => focusChatOnTopic(document.getElementById("topics-drawer-subject").textContent, t);
-
-        const statsBtn = document.createElement("button");
-        statsBtn.textContent = "📊";
-        statsBtn.title = "View mastery & curriculum for this topic";
-        statsBtn.style.cssText = "flex-shrink:0;background:#f2f6f4;border:1px solid #e0e0e0;border-radius:8px;padding:0.55rem 0.6rem;font-size:0.85rem;cursor:pointer;";
-        statsBtn.onclick = () => openTopicMastery(document.getElementById("topics-drawer-subject").textContent, t);
-
-        row.appendChild(pill);
-        row.appendChild(statsBtn);
-        body.appendChild(row);
-      });
-    } catch(e) {
-      body.innerHTML = `<div style="color:#c0392b;font-size:0.85rem;">Could not load topics.</div>`;
+      const topics = await _fetchTopics(subject);
+      _saveCachedTopics(subject, topics);
+      if (!stillCurrent()) return;
+      if (!cached || JSON.stringify(cached) !== JSON.stringify(topics)) renderTopicList(body, subject, topics);
+    } catch (e) {
+      if (e && e.message === "401") return;
+      if (!cached && stillCurrent()) showTopicsError(body, subject, !isOnline());
     }
   }
 
